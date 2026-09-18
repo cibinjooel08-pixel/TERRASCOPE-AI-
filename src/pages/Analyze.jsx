@@ -63,6 +63,31 @@ export default function Analyze({ initialAnalysisId, onAnalysisSuccess, setIsAna
   const handleRunAnalysis = async () => {
     if (isLoading || !query.trim() || !hasValidBbox) return;
 
+    // Temporal Mission Boundary Pre-validation: Copernicus archive starts in 2016
+    const parseYear = (dateStr) => {
+      try {
+        const y = parseInt(String(dateStr).slice(0, 4), 10);
+        return isNaN(y) ? null : y;
+      } catch {
+        return null;
+      }
+    };
+
+    const yearA = parseYear(dateA);
+    const yearB = parseYear(dateB);
+    const promptYears = (query.match(/\b(19\d\d|20\d\d)\b/g) || []).map(y => parseInt(y, 10));
+    const invalidPromptYears = promptYears.filter(y => y < 2016);
+
+    if ((yearA && yearA < 2016) || (yearB && yearB < 2016) || invalidPromptYears.length > 0) {
+      const badYear = invalidPromptYears[0] || (yearA && yearA < 2016 ? yearA : yearB);
+      setErrorState({
+        error_code: 'TEMPORAL_OUT_OF_BOUNDS',
+        message: `Temporal range error: Year ${badYear} precedes Copernicus constellation operational timeline.`,
+        suggestion: 'Copernicus Sentinel-1 and Sentinel-2 satellite data is systematically available only from 2016 to present. Please select observation years between 2016 and 2026.'
+      });
+      return;
+    }
+
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
     }

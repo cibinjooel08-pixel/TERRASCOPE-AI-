@@ -44,12 +44,16 @@ apiClient.interceptors.response.use(
           : 'The Copernicus STAC server or satellite processing took too long. Please click ANALYZE MISSION again.',
       };
     } else if (error.response) {
+      const data = error.response.data;
+      const detail = data?.detail;
+      const isDetailObj = typeof detail === 'object' && detail !== null;
+
       formattedError = {
         success: false,
         status_code: error.response.status,
-        error_code: error.response.data?.error_code || `HTTP_${error.response.status}`,
-        message: error.response.data?.message || error.response.data?.detail || 'Backend API error occurred.',
-        suggestion: error.response.data?.suggestion || 'Try adjusting query parameters.',
+        error_code: (isDetailObj ? detail.error_code : null) || data?.error_code || `HTTP_${error.response.status}`,
+        message: (isDetailObj ? detail.message : null) || (typeof detail === 'string' ? detail : null) || data?.message || 'Backend API error occurred.',
+        suggestion: (isDetailObj ? detail.suggestion : null) || data?.suggestion || 'Try adjusting query parameters.',
       };
     }
 

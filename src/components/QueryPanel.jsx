@@ -129,11 +129,13 @@ export default function QueryPanel({
               <label className="text-slate-300 flex items-center gap-1.5 font-bold">
                 <Calendar className="w-3.5 h-3.5 text-[#00f0ff]" /> BASELINE DATE (T1)
               </label>
-              <span className="text-[9px] text-slate-500">PRE-EVENT</span>
+              <span className="text-[9px] text-[#00f0ff]/70 font-mono">≥ 2016</span>
             </div>
             <input
               type="date"
               value={dateA}
+              min="2016-01-01"
+              max="2026-12-31"
               onChange={(e) => setDateA(e.target.value)}
               className="w-full input-aerospace py-2 px-3 text-xs font-mono-tech bg-[#050b12]"
             />
@@ -145,11 +147,13 @@ export default function QueryPanel({
               <label className="text-slate-300 flex items-center gap-1.5 font-bold">
                 <Calendar className="w-3.5 h-3.5 text-sky-400" /> COMPARISON DATE (T2)
               </label>
-              <span className="text-[9px] text-slate-500">POST-EVENT</span>
+              <span className="text-[9px] text-sky-400/70 font-mono">≥ 2016</span>
             </div>
             <input
               type="date"
               value={dateB}
+              min="2016-01-01"
+              max="2026-12-31"
               onChange={(e) => setDateB(e.target.value)}
               className="w-full input-aerospace py-2 px-3 text-xs font-mono-tech bg-[#050b12]"
             />
