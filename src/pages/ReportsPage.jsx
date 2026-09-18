@@ -49,7 +49,7 @@ export default function ReportsPage() {
       </div>
 
       {/* PDF Export Console */}
-      <div className="panel-aerospace p-6 space-y-4">
+      <div className="panel-aerospace p-6 space-y-4 tech-corners">
         <h2 className="text-sm font-bold text-white font-heading uppercase tracking-wider">
           DOWNLOAD EXECUTIVE BRIEF BY MISSION ID
         </h2>
@@ -66,7 +66,7 @@ export default function ReportsPage() {
           <button
             type="submit"
             disabled={isExporting || !analysisIdInput.trim()}
-            className="w-full sm:w-auto btn-aerospace-cyan px-6 py-2.5 text-xs flex items-center justify-center gap-2 font-mono-tech uppercase"
+            className="w-full sm:w-auto btn-cyan-solid px-6 py-2.5 text-xs flex items-center justify-center gap-2 font-mono-tech uppercase"
           >
             <Download className={`w-4 h-4 ${isExporting ? 'animate-spin' : ''}`} />
             <span>{isExporting ? 'GENERATING PDF...' : 'EXPORT PDF BRIEF'}</span>
@@ -76,21 +76,21 @@ export default function ReportsPage() {
 
       {/* Feature Specs */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 font-mono-tech text-xs">
-        <div className="panel-aerospace p-5 space-y-2">
+        <div className="panel-aerospace p-5 space-y-2 tech-corners">
           <p className="font-bold text-[#00f0ff] uppercase">BI-TEMPORAL VISUAL EVIDENCE</p>
           <p className="text-slate-300 text-[11px] leading-relaxed">
             Includes spectral difference change map overlays, before & after satellite acquisitions, and cloud cover metrics.
           </p>
         </div>
 
-        <div className="panel-aerospace p-5 space-y-2">
+        <div className="panel-aerospace p-5 space-y-2 tech-corners">
           <p className="font-bold text-emerald-400 uppercase">EMPIRICAL CONFIDENCE SCORE</p>
           <p className="text-slate-300 text-[11px] leading-relaxed">
             Audit rating breakdown (90%+ Excellent) calculated from STAC temporal proximity, resolution, and sensor health.
           </p>
         </div>
 
-        <div className="panel-aerospace p-5 space-y-2">
+        <div className="panel-aerospace p-5 space-y-2 tech-corners">
           <p className="font-bold text-amber-400 uppercase">PROVENANCE & METHODOLOGY</p>
           <p className="text-slate-300 text-[11px] leading-relaxed">
             Complete scientific audit trail with Copernicus Data Space Ecosystem (CDSE) collection IDs and processing levels.

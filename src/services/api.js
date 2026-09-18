@@ -2,7 +2,9 @@ import axios from 'axios';
 
 // Dynamically use window.location.hostname so localhost:5173 connects to localhost:8000 (prevents Chrome PNA blocks)
 const getBaseUrl = () => {
-  if (import.meta.env.VITE_API_BASE_URL) return import.meta.env.VITE_API_BASE_URL;
+  if (import.meta.env.VITE_API_BASE_URL) {
+    return import.meta.env.VITE_API_BASE_URL.replace(/\/+$/, '');
+  }
   const host = typeof window !== 'undefined' ? window.location.hostname : 'localhost';
   return `http://${host}:8000`;
 };
@@ -18,19 +20,28 @@ const apiClient = axios.create({
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
+    const requestUrl = error.config?.url || '';
+    const isAuthRequest = requestUrl.includes('/auth');
+
     let formattedError = {
       success: false,
       error_code: 'NETWORK_ERROR',
-      message: 'Could not connect to SatQuery AI backend server.',
-      suggestion: 'Ensure backend server is running on port 8000 (python -m uvicorn app.main:app --host 0.0.0.0 --port 8000).',
+      message: isAuthRequest
+        ? 'Could not connect to backend server. The cloud instance may be offline or starting up.'
+        : 'Could not connect to SatQuery AI backend server.',
+      suggestion: 'Ensure backend server is running (python -m uvicorn app.main:app --host 0.0.0.0 --port 8000) or check Render logs.',
     };
 
     if (error.code === 'ECONNABORTED' || error.message?.includes('timeout')) {
       formattedError = {
         success: false,
         error_code: 'TIMEOUT_ERROR',
-        message: 'Satellite data retrieval timed out after 120 seconds.',
-        suggestion: 'The Copernicus STAC server or satellite processing took too long. Please click ANALYZE MISSION again.',
+        message: isAuthRequest
+          ? 'Authentication timed out. The cloud backend server (Render) is sleeping or unresponsive.'
+          : 'Satellite data retrieval timed out after 120 seconds.',
+        suggestion: isAuthRequest
+          ? 'Please verify that your Render backend service is Active, or run the app locally on http://localhost:5173.'
+          : 'The Copernicus STAC server or satellite processing took too long. Please click ANALYZE MISSION again.',
       };
     } else if (error.response) {
       formattedError = {
@@ -47,12 +58,12 @@ apiClient.interceptors.response.use(
 );
 
 export const loginApi = async (email, password) => {
-  const res = await apiClient.post('/api/auth/login', { email, password });
+  const res = await apiClient.post('/api/auth/login', { email, password }, { timeout: 20000 });
   return res.data;
 };
 
 export const registerApi = async (email, password, fullName = null) => {
-  const res = await apiClient.post('/api/auth/register', { email, password, full_name: fullName });
+  const res = await apiClient.post('/api/auth/register', { email, password, full_name: fullName }, { timeout: 20000 });
   return res.data;
 };
 

@@ -3,12 +3,25 @@ import MapViewer from '../components/MapViewer';
 import QueryPanel from '../components/QueryPanel';
 import AgentTrace from '../components/AgentTrace';
 import { runAnalysis, getHistoryDetail } from '../services/api';
-import { HelpCircle, AlertCircle, Globe, Satellite, ArrowRight, Crosshair, RefreshCw } from 'lucide-react';
+import { 
+  HelpCircle, 
+  AlertCircle, 
+  Globe, 
+  Satellite, 
+  ArrowRight, 
+  Crosshair, 
+  RefreshCw,
+  Compass,
+  Radio,
+  Layers,
+  Activity,
+  CheckCircle2
+} from 'lucide-react';
 
-export default function Analyze({ initialAnalysisId, onAnalysisSuccess }) {
+export default function Analyze({ initialAnalysisId, onAnalysisSuccess, setIsAnalyzing }) {
   const [bbox, setBbox] = useState([80.24, 13.05, 80.29, 13.10]);
   const [locationLabel, setLocationLabel] = useState('Chennai Urban Basin');
-  const [query, setQuery] = useState('Did this area flood after the storm? Show water expansion.');
+  const [query, setQuery] = useState('Did this area flood after heavy rain? Show water expansion.');
   const [dateA, setDateA] = useState('2024-05-01');
   const [dateB, setDateB] = useState('2024-05-20');
   const [satellite, setSatellite] = useState('auto');
@@ -23,6 +36,7 @@ export default function Analyze({ initialAnalysisId, onAnalysisSuccess }) {
   useEffect(() => {
     if (initialAnalysisId) {
       setIsLoading(true);
+      if (setIsAnalyzing) setIsAnalyzing(true);
       getHistoryDetail(initialAnalysisId)
         .then((res) => {
           if (res.success && res.record) {
@@ -35,19 +49,20 @@ export default function Analyze({ initialAnalysisId, onAnalysisSuccess }) {
             if (rec.location_label) setLocationLabel(rec.location_label);
           }
           setIsLoading(false);
+          if (setIsAnalyzing) setIsAnalyzing(false);
         })
         .catch(() => {
           setIsLoading(false);
+          if (setIsAnalyzing) setIsAnalyzing(false);
         });
     }
-  }, [initialAnalysisId]);
+  }, [initialAnalysisId, setIsAnalyzing]);
 
   const hasValidBbox = Array.isArray(bbox) && bbox.length === 4 && bbox.every(n => typeof n === 'number' && !isNaN(n));
 
   const handleRunAnalysis = async () => {
     if (isLoading || !query.trim() || !hasValidBbox) return;
 
-    // Abort previous pending request if any
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
     }
@@ -56,6 +71,7 @@ export default function Analyze({ initialAnalysisId, onAnalysisSuccess }) {
     abortControllerRef.current = controller;
 
     setIsLoading(true);
+    if (setIsAnalyzing) setIsAnalyzing(true);
     setErrorState(null);
     setAgentStage(1);
 
@@ -88,122 +104,138 @@ export default function Analyze({ initialAnalysisId, onAnalysisSuccess }) {
     } catch (err) {
       clearInterval(stageTimer);
       if (err.name === 'CanceledError' || err.name === 'AbortError') {
-        return; // Aborted request, silent return
+        return;
       }
       setErrorState(err);
     } finally {
       setIsLoading(false);
+      if (setIsAnalyzing) setIsAnalyzing(false);
     }
   };
 
   return (
     <div className="space-y-6 py-2">
       
-      {/* STEP 01: MISSION CONFIGURATION & QUERY INPUT */}
-      <QueryPanel
-        query={query}
-        setQuery={setQuery}
-        dateA={dateA}
-        setDateA={setDateA}
-        dateB={dateB}
-        setDateB={setDateB}
-        satellite={satellite}
-        setSatellite={setSatellite}
-        isLoading={isLoading}
-      />
-
-      {/* PIPELINE PROGRESS TRACE */}
-      {isLoading && (
-        <div className="panel-aerospace p-6 space-y-4 text-center relative overflow-hidden tech-corners">
-          <div className="flex items-center justify-center gap-2 text-[#00f0ff] font-mono-tech text-xs font-bold uppercase">
-            <Satellite className="w-5 h-5 animate-spin" />
-            <span>OBSERVING EARTH // COPERNICUS STAC CATALOGING IN PROGRESS</span>
+      {/* 1. FLIGHT WORKSTATION BANNER */}
+      <div className="panel-aerospace p-5 sm:p-6 space-y-2 tech-corners">
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded bg-[#00f0ff]/10 border border-[#00f0ff]/30 flex items-center justify-center">
+              <Crosshair className="w-5 h-5 text-[#00f0ff]" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <h1 className="text-xl sm:text-2xl font-bold text-white font-heading uppercase tracking-wider">
+                  SATELLITE ANALYSIS WORKSTATION
+                </h1>
+                <span className="badge-telemetry badge-telemetry-cyan font-mono-tech">
+                  MISSION DEPLOYMENT
+                </span>
+              </div>
+              <p className="text-xs text-slate-400 font-mono-tech">
+                5-Step Scientific Earth Observation Protocol • Real Copernicus CDSE Ingestion
+              </p>
+            </div>
           </div>
-          <AgentTrace
-            currentStage={agentStage}
-            isComplete={false}
-            activeSpecialist={null}
-          />
-        </div>
-      )}
 
-      {/* STEP 02 & 03: TARGET OBSERVATION MAP & AOI SELECTION */}
-      <div className="panel-aerospace p-5 space-y-4">
-        <div className="flex items-center justify-between border-b border-[#20252b] pb-3">
-          <div className="flex items-center gap-2">
-            <Globe className="w-4 h-4 text-[#00f0ff]" />
-            <span className="text-xs font-bold text-white font-heading uppercase tracking-wider">
-              TARGET OBSERVATION CANVAS & BOUNDING BOX
+          {/* Workflow Step Tracker */}
+          <div className="hidden lg:flex items-center gap-2 font-mono-tech text-[10px]">
+            <span className="px-2 py-1 rounded bg-[#0d1620] border border-[#00f0ff]/40 text-[#00f0ff] font-bold">
+              01 OBJECTIVE
+            </span>
+            <span className="text-slate-600">→</span>
+            <span className="px-2 py-1 rounded bg-[#0d1620] border border-[#152232] text-slate-300">
+              02 TARGET AOI
+            </span>
+            <span className="text-slate-600">→</span>
+            <span className="px-2 py-1 rounded bg-[#0d1620] border border-[#152232] text-slate-300">
+              03 DATES
+            </span>
+            <span className="text-slate-600">→</span>
+            <span className="px-2 py-1 rounded bg-[#0d1620] border border-[#152232] text-slate-300">
+              04 SENSORS
+            </span>
+            <span className="text-slate-600">→</span>
+            <span className="px-2 py-1 rounded bg-[#0d1620] border border-[#152232] text-slate-300">
+              05 EXECUTE
             </span>
           </div>
-          <span className="text-xs font-mono-tech text-slate-400">
-            COORDINATES: [{bbox.map(n => typeof n === 'number' ? n.toFixed(2) : n).join(', ')}]
-          </span>
-        </div>
-
-        <div className="h-[520px] rounded overflow-hidden border border-[#20252b] relative">
-          <MapViewer
-            bbox={bbox}
-            setBbox={setBbox}
-            setLocationLabel={setLocationLabel}
-          />
-        </div>
-
-        {/* STEP 04: ANALYZE MISSION BUTTON (Visually Centered Below Map) */}
-        <div className="flex flex-col items-center justify-center pt-3 pb-1 space-y-2 font-mono-tech border-t border-[#172332]">
-          {!hasValidBbox ? (
-            <div className="px-6 py-3 rounded bg-[#080d12] border border-amber-500/40 text-amber-400 text-xs flex items-center gap-2 uppercase">
-              <AlertCircle className="w-4 h-4" />
-              <span>SELECT AN AOI TO CONTINUE</span>
-            </div>
-          ) : (
-            <button
-              type="button"
-              onClick={handleRunAnalysis}
-              disabled={isLoading || !query.trim()}
-              className="btn-cyan-solid px-10 py-3.5 text-xs sm:text-sm flex items-center justify-center gap-3 uppercase font-mono-tech tracking-wider shadow-[0_0_30px_rgba(0,240,255,0.25)] hover:scale-105 transition-all disabled:opacity-50 disabled:hover:scale-100 cursor-pointer"
-            >
-              {isLoading ? (
-                <>
-                  <div className="w-4 h-4 border-2 border-[#020406] border-t-transparent rounded-full animate-spin" />
-                  <span>ANALYZING MISSION...</span>
-                </>
-              ) : (
-                <>
-                  <span>ANALYZE MISSION</span>
-                  <ArrowRight className="w-4 h-4" />
-                </>
-              )}
-            </button>
-          )}
-
-          <span className="text-[10px] text-slate-500 font-mono-tech">
-            TARGET AOI: {locationLabel.toUpperCase()} • [{bbox.map(n => typeof n === 'number' ? n.toFixed(2) : n).join(', ')}]
-          </span>
         </div>
       </div>
 
-      {/* ERROR DIAGNOSTIC DISPLAY & RETRY */}
+      {/* 2. ERROR ADVISORY BANNER */}
       {errorState && (
-        <div className="panel-aerospace p-6 border-rose-500/50 text-rose-300 space-y-3 font-mono-tech">
-          <div className="flex items-center gap-2 font-bold text-xs">
-            <AlertCircle className="w-5 h-5 text-rose-400" />
-            <span>ANALYSIS REQUEST FAILED ({errorState.error_code || 'ERROR'})</span>
-          </div>
-          <p className="text-xs text-slate-300">{errorState.message}</p>
-          <p className="text-xs text-slate-400">💡 {errorState.suggestion}</p>
-
-          <div className="pt-2">
-            <button
-              onClick={handleRunAnalysis}
-              className="btn-dark-outline px-4 py-2 text-xs flex items-center gap-2 uppercase"
-            >
-              <RefreshCw className="w-3.5 h-3.5" />
-              <span>RETRY ANALYSIS</span>
-            </button>
+        <div className="p-4 bg-rose-500/10 border border-rose-500/40 rounded flex items-start gap-3 text-xs text-rose-300 font-mono-tech">
+          <AlertCircle className="w-5 h-5 text-rose-400 shrink-0 mt-0.5" />
+          <div className="space-y-1">
+            <p className="font-bold text-white">MISSION EXECUTION INTERRUPTED [{errorState.error_code || 'ERROR'}]</p>
+            <p className="leading-relaxed text-rose-200">{errorState.message || 'Telemetry retrieval failed.'}</p>
+            {errorState.suggestion && (
+              <p className="text-[11px] text-rose-400">Recommendation: {errorState.suggestion}</p>
+            )}
           </div>
         </div>
       )}
+
+      {/* 3. WORKSTATION MAIN GRID: QUERY PANEL + RECONNAISSANCE MAP */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        {/* LEFT COLUMN: QUERY & MISSION PARAMS (6 Columns) */}
+        <div className="lg:col-span-6 space-y-6">
+          <QueryPanel
+            query={query}
+            setQuery={setQuery}
+            dateA={dateA}
+            setDateA={setDateA}
+            dateB={dateB}
+            setDateB={setDateB}
+            satellite={satellite}
+            setSatellite={setSatellite}
+            onRunAnalysis={handleRunAnalysis}
+            isLoading={isLoading}
+          />
+
+          {/* ACTIVE MULTI-STAGE FLIGHT TELEMETRY TRACKER */}
+          {isLoading && (
+            <AgentTrace stage={agentStage} isLoading={isLoading} />
+          )}
+        </div>
+
+        {/* RIGHT COLUMN: STEP 02 RECONNAISSANCE AOI MAP (6 Columns) */}
+        <div className="lg:col-span-6 space-y-4">
+          <div className="panel-aerospace p-5 space-y-3 tech-corners">
+            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#152232] pb-3">
+              <div className="flex items-center gap-2">
+                <span className="px-2 py-0.5 rounded bg-[#00f0ff]/10 text-[#00f0ff] border border-[#00f0ff]/30 text-[9.5px] font-mono-tech font-bold uppercase tracking-wider">
+                  STEP 02 // AOI
+                </span>
+                <h2 className="text-sm font-bold text-white font-heading uppercase tracking-wider">
+                  AREA OF INTEREST (AOI) TARGETING
+                </h2>
+              </div>
+              <span className="text-[10px] font-mono-tech text-[#00f0ff] font-bold">
+                PAN & ZOOM MAP TO RE-CENTER AOI
+              </span>
+            </div>
+
+            {/* Tactical Reconnaissance Map */}
+            <div className="h-[480px] rounded border border-[#152232] relative overflow-hidden bg-[#03070d]">
+              <MapViewer
+                bbox={bbox}
+                setBbox={setBbox}
+                setLocationLabel={setLocationLabel}
+                activeLayer="dark"
+              />
+            </div>
+
+            <div className="flex items-center justify-between text-[10px] font-mono-tech text-slate-400 pt-1">
+              <span>TARGET REGION: <span className="text-white font-bold">{locationLabel}</span></span>
+              <span className="text-slate-500">CRS: EPSG:4326</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
 
     </div>
   );

@@ -31,15 +31,15 @@ export default function SettingsPage({ user, setUser, onLogout }) {
       <form onSubmit={handleSave} className="space-y-6">
         
         {/* Account Section */}
-        <div className="panel-aerospace p-6 space-y-4">
-          <div className="flex items-center gap-2 border-b border-[#20252b] pb-3 font-mono-tech text-xs text-[#00f0ff] font-bold">
+        <div className="panel-aerospace p-6 space-y-4 tech-corners">
+          <div className="flex items-center gap-2 border-b border-[#152232] pb-3 font-mono-tech text-xs text-[#00f0ff] font-bold uppercase tracking-wider">
             <User className="w-4 h-4" />
             <span>ANALYST PROFILE & CREDENTIALS</span>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono-tech">
-            <div className="space-y-1">
-              <label className="text-slate-400 block text-[11px]">FULL NAME</label>
+            <div className="space-y-1.5">
+              <label className="text-slate-400 block text-[10px] uppercase tracking-wider">FULL NAME</label>
               <input
                 type="text"
                 value={user?.name || 'Dr. Sarah Vance'}
@@ -48,8 +48,8 @@ export default function SettingsPage({ user, setUser, onLogout }) {
               />
             </div>
 
-            <div className="space-y-1">
-              <label className="text-slate-400 block text-[11px]">ORGANIZATION</label>
+            <div className="space-y-1.5">
+              <label className="text-slate-400 block text-[10px] uppercase tracking-wider">ORGANIZATION</label>
               <input
                 type="text"
                 readOnly
@@ -61,23 +61,23 @@ export default function SettingsPage({ user, setUser, onLogout }) {
         </div>
 
         {/* Display & Map Section */}
-        <div className="panel-aerospace p-6 space-y-4">
-          <div className="flex items-center gap-2 border-b border-[#20252b] pb-3 font-mono-tech text-xs text-[#00f0ff] font-bold">
+        <div className="panel-aerospace p-6 space-y-4 tech-corners">
+          <div className="flex items-center gap-2 border-b border-[#152232] pb-3 font-mono-tech text-xs text-[#00f0ff] font-bold uppercase tracking-wider">
             <Monitor className="w-4 h-4" />
             <span>DISPLAY & BASEMAP CONFIGURATION</span>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono-tech">
-            <div className="space-y-1">
-              <label className="text-slate-400 block text-[11px]">INTERFACE THEME</label>
+            <div className="space-y-1.5">
+              <label className="text-slate-400 block text-[10px] uppercase tracking-wider">INTERFACE THEME</label>
               <select className="w-full input-aerospace py-2 px-3 text-xs cursor-pointer">
                 <option value="deepspace">PRIVATE AEROSPACE MIDNIGHT</option>
                 <option value="highcontrast">HIGH CONTRAST SPACE TELEMETRY</option>
               </select>
             </div>
 
-            <div className="space-y-1">
-              <label className="text-slate-400 block text-[11px]">DEFAULT BASEMAP CANVAS</label>
+            <div className="space-y-1.5">
+              <label className="text-slate-400 block text-[10px] uppercase tracking-wider">DEFAULT BASEMAP CANVAS</label>
               <select 
                 value={mapBase} 
                 onChange={(e) => setMapBase(e.target.value)}
@@ -91,15 +91,15 @@ export default function SettingsPage({ user, setUser, onLogout }) {
         </div>
 
         {/* Satellite Preferences */}
-        <div className="panel-aerospace p-6 space-y-4">
-          <div className="flex items-center gap-2 border-b border-[#20252b] pb-3 font-mono-tech text-xs text-[#00f0ff] font-bold">
+        <div className="panel-aerospace p-6 space-y-4 tech-corners">
+          <div className="flex items-center gap-2 border-b border-[#152232] pb-3 font-mono-tech text-xs text-[#00f0ff] font-bold uppercase tracking-wider">
             <Satellite className="w-4 h-4" />
             <span>SATELLITE ROUTING PREFERENCES</span>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono-tech">
-            <div className="space-y-1">
-              <label className="text-slate-400 block text-[11px]">DEFAULT SENSOR ROUTER</label>
+            <div className="space-y-1.5">
+              <label className="text-slate-400 block text-[10px] uppercase tracking-wider">DEFAULT SENSOR ROUTER</label>
               <select 
                 value={selectedSensor} 
                 onChange={(e) => setSelectedSensor(e.target.value)}
@@ -111,8 +111,8 @@ export default function SettingsPage({ user, setUser, onLogout }) {
               </select>
             </div>
 
-            <div className="space-y-1">
-              <label className="text-slate-400 block text-[11px]">PRIMARY STAC PROVIDER</label>
+            <div className="space-y-1.5">
+              <label className="text-slate-400 block text-[10px] uppercase tracking-wider">PRIMARY STAC PROVIDER</label>
               <input
                 type="text"
                 readOnly
@@ -124,24 +124,24 @@ export default function SettingsPage({ user, setUser, onLogout }) {
         </div>
 
         {/* System Diagnostics */}
-        <div className="panel-aerospace p-6 space-y-4">
-          <div className="flex items-center gap-2 border-b border-[#20252b] pb-3 font-mono-tech text-xs text-emerald-400 font-bold">
+        <div className="panel-aerospace p-6 space-y-4 tech-corners">
+          <div className="flex items-center gap-2 border-b border-[#152232] pb-3 font-mono-tech text-xs text-emerald-400 font-bold uppercase tracking-wider">
             <Server className="w-4 h-4" />
             <span>SYSTEM DIAGNOSTICS & PORTS</span>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs font-mono-tech">
-            <div className="bg-[#07090b] p-3 rounded border border-[#20252b]">
-              <p className="text-[10px] text-slate-500">FASTAPI BACKEND</p>
-              <p className="text-emerald-400 font-bold">ONLINE (127.0.0.1:8000)</p>
+            <div className="bg-[#060b12] p-3.5 rounded border border-[#152232] hover:border-[#1e344d] transition-colors">
+              <p className="text-[10px] text-slate-500 uppercase tracking-wider">FASTAPI BACKEND</p>
+              <p className="text-emerald-400 font-bold mt-0.5">ONLINE (127.0.0.1:8000)</p>
             </div>
-            <div className="bg-[#07090b] p-3 rounded border border-[#20252b]">
-              <p className="text-[10px] text-slate-500">COPERNICUS OAUTH</p>
-              <p className="text-[#00f0ff] font-bold">AUTHENTICATED (CDSE)</p>
+            <div className="bg-[#060b12] p-3.5 rounded border border-[#152232] hover:border-[#1e344d] transition-colors">
+              <p className="text-[10px] text-slate-500 uppercase tracking-wider">COPERNICUS OAUTH</p>
+              <p className="text-[#00f0ff] font-bold mt-0.5">AUTHENTICATED (CDSE)</p>
             </div>
-            <div className="bg-[#07090b] p-3 rounded border border-[#20252b]">
-              <p className="text-[10px] text-slate-500">SQLITE STORAGE</p>
-              <p className="text-emerald-400 font-bold">CONNECTED</p>
+            <div className="bg-[#060b12] p-3.5 rounded border border-[#152232] hover:border-[#1e344d] transition-colors">
+              <p className="text-[10px] text-slate-500 uppercase tracking-wider">SQLITE STORAGE</p>
+              <p className="text-emerald-400 font-bold mt-0.5">CONNECTED</p>
             </div>
           </div>
         </div>
@@ -167,7 +167,7 @@ export default function SettingsPage({ user, setUser, onLogout }) {
             )}
             <button
               type="submit"
-              className="btn-aerospace-cyan px-6 py-2.5 text-xs flex items-center gap-2 uppercase font-mono-tech"
+              className="btn-cyan-solid px-6 py-2.5 text-xs flex items-center gap-2 uppercase font-mono-tech tracking-wider"
             >
               <Save className="w-4 h-4" />
               <span>SAVE CONFIGURATION</span>

@@ -1,36 +1,46 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700;800&display=swap');
 
 /* ==========================================================================
-   TERRASCOPE AI V2.4 — AEROSPACE DESIGN SYSTEM
+   TERRASCOPE AI — PRIVATE SPACE AGENCY MISSION CONTROL DESIGN SYSTEM
    ========================================================================== */
 
 :root {
-  --bg-space-void: #020406;
-  --bg-space-dark: #05080b;
-  --bg-space-panel: #080d12;
-  --bg-space-card: #0c1218;
-  --bg-space-hover: #121a24;
-  
-  --border-subtle: #172332;
-  --border-strong: #1e2d42;
-  --border-cyan: rgba(0, 240, 255, 0.3);
-  --border-cyan-glow: rgba(0, 240, 255, 0.6);
-  
+  /* Environment Colors */
+  --space-void: #03070d;
+  --space-dark: #050b12;
+  --space-surface: #08111b;
+  --space-panel: #0a111a;
+  --space-panel-elevated: #0d1620;
+  --space-card: #101b26;
+  --space-card-hover: #142230;
+
+  /* Tactical Borders */
+  --border-subtle: #152232;
+  --border-strong: #1e3146;
+  --border-active: #2a435e;
+  --border-cyan: rgba(0, 240, 255, 0.35);
+  --border-cyan-glow: rgba(0, 240, 255, 0.65);
+
+  /* Aerospace Accents */
   --accent-cyan: #00f0ff;
   --accent-cyan-hover: #00d8f6;
   --accent-sky: #38bdf8;
   --accent-blue: #0284c7;
+  --accent-deep-blue: #0369a1;
   --accent-emerald: #10b981;
   --accent-amber: #f59e0b;
   --accent-rose: #ef4444;
-  
+
+  /* Typography Colors */
   --text-white: #ffffff;
-  --text-primary: #e9eef5;
-  --text-secondary: #8fa1b5;
-  --text-muted: #576b80;
-  
-  --font-heading: 'Space Grotesk', 'Inter', -apple-system, sans-serif;
-  --font-body: 'Inter', -apple-system, sans-serif;
+  --text-primary: #f0f4f8;
+  --text-secondary: #94a3b8;
+  --text-muted: #52637a;
+  --text-dim: #334155;
+
+  /* Fonts */
+  --font-heading: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 }
 
@@ -42,32 +52,34 @@
 
 html {
   scroll-behavior: smooth;
-  background-color: var(--bg-space-void);
+  background-color: var(--space-void);
   color: var(--text-primary);
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
 }
 
 body {
-  background-color: var(--bg-space-void) !important;
+  background-color: var(--space-void) !important;
   color: var(--text-primary) !important;
   font-family: var(--font-body);
   line-height: 1.5;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  
-  /* Space Grid Background Overlay */
-  background-image: 
-    radial-gradient(ellipse 80% 50% at 50% 0%, rgba(0, 240, 255, 0.05) 0%, transparent 70%),
-    radial-gradient(circle at 90% 90%, rgba(2, 132, 199, 0.04) 0%, transparent 50%),
-    linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
-  background-size: 100% 100%, 100% 100%, 48px 48px, 48px 48px;
+
+  /* Precision Space Grid with Atmospheric Glow */
+  background-image:
+    radial-gradient(ellipse 90% 60% at 50% -10%, rgba(0, 240, 255, 0.04) 0%, transparent 60%),
+    radial-gradient(circle at 95% 85%, rgba(2, 132, 199, 0.03) 0%, transparent 40%),
+    linear-gradient(to right, rgba(255, 255, 255, 0.012) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.012) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
   background-attachment: fixed;
 }
 
+/* Typography Utilities */
 .font-heading {
   font-family: var(--font-heading) !important;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.025em;
 }
 
 .font-body {
@@ -76,39 +88,76 @@ body {
 
 .font-mono-tech {
   font-family: var(--font-mono) !important;
+  font-variant-numeric: tabular-nums;
 }
 
 .tracking-mission {
-  letter-spacing: 0.12em;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
 }
 
-/* Aerospace Cards & Panels */
+/* Aerospace Mission Panels & Cards */
 .panel-aerospace {
-  background-color: var(--bg-space-panel);
+  background-color: var(--space-panel);
   border: 1px solid var(--border-subtle);
-  border-radius: 8px;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.6);
-  transition: all 0.2s ease;
+  border-radius: 4px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
   position: relative;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .panel-aerospace:hover {
   border-color: var(--border-strong);
 }
 
-.panel-aerospace-cyan {
-  background-color: var(--bg-space-panel);
-  border: 1px solid var(--border-cyan);
-  border-radius: 8px;
-  box-shadow: 0 0 24px rgba(0, 240, 255, 0.08);
+.panel-aerospace-elevated {
+  background-color: var(--space-panel-elevated);
+  border: 1px solid var(--border-strong);
+  border-radius: 4px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.7);
 }
 
-/* Hero Section with Cinematic Earth Background */
+.panel-aerospace-cyan {
+  background-color: var(--space-panel);
+  border: 1px solid var(--border-cyan);
+  border-radius: 4px;
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.08);
+}
+
+/* Tactical Corner Brackets for High-Precision Modules */
+.tech-corners {
+  position: relative;
+}
+
+.tech-corners::before,
+.tech-corners::after {
+  content: '';
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.tech-corners::before {
+  top: -1px;
+  left: -1px;
+  border-top: 1.5px solid var(--accent-cyan);
+  border-left: 1.5px solid var(--accent-cyan);
+}
+
+.tech-corners::after {
+  bottom: -1px;
+  right: -1px;
+  border-bottom: 1.5px solid var(--accent-cyan);
+  border-right: 1.5px solid var(--accent-cyan);
+}
+
+/* Hero Section with Cinematic Earth Atmosphere */
 .panel-aerospace-hero {
-  background: linear-gradient(135deg, rgba(8, 13, 18, 0.95) 0%, rgba(5, 8, 11, 0.98) 100%);
-  border: 1px solid var(--border-subtle);
-  border-radius: 10px;
+  background: linear-gradient(145deg, rgba(13, 22, 32, 0.98) 0%, rgba(8, 17, 27, 0.99) 60%, rgba(5, 11, 18, 1) 100%);
+  border: 1px solid var(--border-strong);
+  border-radius: 6px;
   position: relative;
   overflow: hidden;
 }
@@ -120,23 +169,24 @@ body {
   left: 0;
   right: 0;
   height: 2px;
-  background: linear-gradient(90deg, var(--accent-cyan), var(--accent-blue), transparent);
+  background: linear-gradient(90deg, var(--accent-cyan) 0%, rgba(0, 240, 255, 0.4) 30%, transparent 80%);
 }
 
 /* Buttons */
 .btn-cyan-solid {
   background-color: var(--accent-cyan);
-  color: #020406;
+  color: #03070d;
   font-weight: 700;
   font-family: var(--font-heading);
-  border-radius: 6px;
+  border-radius: 3px;
   border: 1px solid var(--accent-cyan);
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
+  letter-spacing: 0.04em;
 }
 
 .btn-cyan-solid:hover {
   background-color: var(--accent-cyan-hover);
-  box-shadow: 0 0 16px rgba(0, 240, 255, 0.4);
+  box-shadow: 0 0 16px rgba(0, 240, 255, 0.35);
   transform: translateY(-1px);
 }
 
@@ -145,138 +195,158 @@ body {
   color: var(--accent-cyan);
   font-weight: 600;
   font-family: var(--font-body);
-  border-radius: 6px;
+  border-radius: 3px;
   border: 1px solid var(--border-cyan);
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
 }
 
 .btn-cyan-outline:hover {
-  background-color: rgba(0, 240, 255, 0.1);
+  background-color: rgba(0, 240, 255, 0.08);
   border-color: var(--accent-cyan);
   color: #ffffff;
+  box-shadow: 0 0 12px rgba(0, 240, 255, 0.15);
 }
 
 .btn-dark-outline {
-  background-color: var(--bg-space-card);
+  background-color: var(--space-surface);
   color: var(--text-primary);
   font-weight: 600;
   font-family: var(--font-body);
-  border-radius: 6px;
+  border-radius: 3px;
   border: 1px solid var(--border-subtle);
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
 }
 
 .btn-dark-outline:hover {
-  background-color: var(--bg-space-hover);
+  background-color: var(--space-card-hover);
   border-color: var(--border-strong);
   color: #ffffff;
 }
 
-/* Inputs */
+/* Inputs & Form Controls */
 .input-aerospace {
-  background-color: var(--bg-space-dark) !important;
+  background-color: var(--space-dark) !important;
   color: var(--text-white) !important;
   border: 1px solid var(--border-subtle) !important;
-  border-radius: 6px;
+  border-radius: 3px;
   font-family: var(--font-body);
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
 }
 
 .input-aerospace:focus {
   outline: none !important;
   border-color: var(--accent-cyan) !important;
-  box-shadow: 0 0 12px rgba(0, 240, 255, 0.2) !important;
-  background-color: var(--bg-space-panel) !important;
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.2) !important;
+  background-color: var(--space-panel) !important;
 }
 
-/* Badges */
+/* Telemetry Status Badges */
 .badge-telemetry {
   display: inline-flex;
   align-items: center;
-  padding: 2px 8px;
-  border-radius: 4px;
-  font-size: 10px;
+  padding: 2px 7px;
+  border-radius: 2px;
+  font-size: 9.5px;
   font-family: var(--font-mono);
   font-weight: 700;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
 }
 
 .badge-telemetry-cyan {
-  background-color: rgba(0, 240, 255, 0.12);
+  background-color: rgba(0, 240, 255, 0.1);
   border: 1px solid rgba(0, 240, 255, 0.35);
   color: var(--accent-cyan);
 }
 
 .badge-telemetry-emerald {
-  background-color: rgba(16, 185, 129, 0.12);
+  background-color: rgba(16, 185, 129, 0.1);
   border: 1px solid rgba(16, 185, 129, 0.35);
   color: var(--accent-emerald);
 }
 
 .badge-telemetry-amber {
-  background-color: rgba(245, 158, 11, 0.12);
+  background-color: rgba(245, 158, 11, 0.1);
   border: 1px solid rgba(245, 158, 11, 0.35);
   color: var(--accent-amber);
 }
 
 .badge-telemetry-rose {
-  background-color: rgba(239, 68, 68, 0.12);
+  background-color: rgba(239, 68, 68, 0.1);
   border: 1px solid rgba(239, 68, 68, 0.35);
   color: var(--accent-rose);
 }
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+  width: 4px;
+  height: 4px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--bg-space-void);
+  background: var(--space-void);
 }
 
 ::-webkit-scrollbar-thumb {
   background: var(--border-strong);
-  border-radius: 3px;
+  border-radius: 2px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--accent-cyan);
 }
 
-/* Leaflet Canvas Overrides */
+/* Leaflet Reconnaissance Map Canvas Overrides */
 .leaflet-container {
   width: 100%;
   height: 100%;
-  background: var(--bg-space-void) !important;
+  background: var(--space-void) !important;
   font-family: var(--font-body) !important;
-  border-radius: 6px;
+  border-radius: 4px;
 }
 
 .leaflet-control-zoom {
   border: 1px solid var(--border-strong) !important;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.8) !important;
-  border-radius: 6px !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.8) !important;
+  border-radius: 3px !important;
   overflow: hidden;
 }
 
 .leaflet-control-zoom a {
-  background-color: var(--bg-space-panel) !important;
+  background-color: var(--space-panel) !important;
   color: var(--text-white) !important;
   border-bottom: 1px solid var(--border-subtle) !important;
 }
 
 .leaflet-control-zoom a:hover {
-  background-color: var(--bg-space-hover) !important;
+  background-color: var(--space-card-hover) !important;
   color: var(--accent-cyan) !important;
 }
 
+/* Pulse Animations */
 @keyframes pulse-cyan {
-  0%, 100% { opacity: 0.3; }
-  50% { opacity: 0.9; }
+  0%, 100% { opacity: 0.25; }
+  50% { opacity: 0.85; }
 }
 
 .animate-pulse-cyan {
   animation: pulse-cyan 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Radar Scan Line Effect */
+@keyframes radar-scan {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(1000%); }
+}
+
+.radar-scan-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent);
+  animation: radar-scan 6s linear infinite;
+  pointer-events: none;
+  opacity: 0.4;
 }

@@ -3,7 +3,7 @@ import { MapContainer, TileLayer, ImageOverlay, Marker, Popup, useMap, useMapEve
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
-import { Search, MapPin, Layers, Navigation, Crosshair } from 'lucide-react';
+import { Search, MapPin, Layers, Navigation, Crosshair, Globe, Radio, Maximize2 } from 'lucide-react';
 import axios from 'axios';
 
 delete L.Icon.Default.prototype._getIconUrl;
@@ -79,7 +79,6 @@ export default function MapViewer({
 
   const roundCoord = (val) => Math.round(val * 10000) / 10000;
 
-  // Viewport change handler: called whenever map finishes panning or zooming
   const handleViewportChange = (bounds, newCenter, newZoom) => {
     if (!bounds || !newCenter) return;
     const sw = bounds.getSouthWest();
@@ -96,10 +95,8 @@ export default function MapViewer({
     const lonSpan = Math.abs(rEast - rWest);
     const latSpan = Math.abs(rNorth - rSouth);
 
-    // Guard against global/country-scale bounding boxes (e.g. zoom < 10 or span > 0.1 degrees ~ 11km)
-    // STAC Satellite processing requires local AOI bounding box <= 0.1 degree span
     if (lonSpan > 0.1 || latSpan > 0.1 || newZoom < 10) {
-      const clampDelta = 0.025; // ~5.5km AOI
+      const clampDelta = 0.025;
       rWest = roundCoord(rLon - clampDelta);
       rEast = roundCoord(rLon + clampDelta);
       rSouth = roundCoord(rLat - clampDelta);
@@ -123,7 +120,6 @@ export default function MapViewer({
     setManualLat(rLat.toString());
     setManualLon(rLon.toString());
 
-    // Compute clean local AOI bbox centered on clicked coordinates
     const delta = zoom >= 14 ? 0.008 : zoom >= 12 ? 0.015 : 0.025;
     const newBbox = [
       roundCoord(rLon - delta),
@@ -132,7 +128,7 @@ export default function MapViewer({
       roundCoord(rLat + delta)
     ];
     if (setBbox) setBbox(newBbox);
-    if (setLocationLabel) setLocationLabel(`Selected Location [${rLat}, ${rLon}]`);
+    if (setLocationLabel) setLocationLabel(`Selected AOI [${rLat}, ${rLon}]`);
   };
 
   const handleApplyCoordinates = (e) => {
@@ -140,7 +136,6 @@ export default function MapViewer({
     const lat = parseFloat(manualLat);
     const lon = parseFloat(manualLon);
     if (isNaN(lat) || isNaN(lon)) return;
-
     handleMapClick(lat, lon);
   };
 
@@ -194,24 +189,26 @@ export default function MapViewer({
   const areaSqKm = Math.round(widthKm * heightKm * 10) / 10;
 
   return (
-    <div className="space-y-3 font-sans">
+    <div className="space-y-3 font-sans h-full flex flex-col">
       
-      {/* Interactive Location Selection & Coordinate Input Panel */}
-      <div className="card-aerospace p-4 space-y-3">
-        <div className="flex items-center justify-between border-b border-slate-800/80 pb-2.5">
-          <span className="text-xs font-bold text-white flex items-center gap-1.5 font-heading">
-            <Crosshair className="w-4 h-4 text-sky-400" /> Interactive Location & Coordinates
-          </span>
-          <span className="pill-badge pill-badge-sky text-[10px]">
-            Click Map to Select AOI
+      {/* Precision Tactical Coordinate HUD Bar */}
+      <div className="panel-aerospace p-3 space-y-2.5 font-mono-tech tech-corners bg-[#08111b]">
+        <div className="flex items-center justify-between border-b border-[#152232] pb-2 text-xs">
+          <div className="flex items-center gap-2">
+            <Crosshair className="w-3.5 h-3.5 text-[#00f0ff]" />
+            <span className="font-bold text-white uppercase tracking-wider text-[11px]">
+              TARGET COORDINATE TELEMETRY
+            </span>
+          </div>
+          <span className="badge-telemetry badge-telemetry-cyan text-[9px]">
+            EPSG:4326 WGS84
           </span>
         </div>
 
-        {/* Manual Lat/Lon Form + Paste Coordinates */}
-        <div className="grid grid-cols-1 sm:grid-cols-12 gap-2.5 text-xs">
-          
-          <div className="sm:col-span-5 flex items-center gap-2 bg-[#070d19] p-1.5 rounded-xl border border-slate-800">
-            <span className="text-xs text-slate-400 font-semibold pl-1 font-mono-tech">Lat:</span>
+        {/* Input Matrix: Lat, Lon, Paste & Locate */}
+        <div className="grid grid-cols-1 sm:grid-cols-12 gap-2 text-xs">
+          <div className="sm:col-span-5 flex items-center gap-1.5 bg-[#050b12] p-1.5 rounded border border-[#152232]">
+            <span className="text-[10px] text-slate-500 font-bold pl-1">LAT:</span>
             <input
               type="text"
               value={manualLat}
@@ -219,7 +216,7 @@ export default function MapViewer({
               placeholder="13.0827"
               className="w-full bg-transparent text-xs text-white focus:outline-none font-mono-tech px-1"
             />
-            <span className="text-xs text-slate-400 font-semibold font-mono-tech">Lon:</span>
+            <span className="text-[10px] text-slate-500 font-bold">LON:</span>
             <input
               type="text"
               value={manualLon}
@@ -229,76 +226,75 @@ export default function MapViewer({
             />
             <button
               onClick={handleApplyCoordinates}
-              className="btn-sky-primary px-3 py-1 text-[11px] font-bold flex-shrink-0"
+              className="btn-cyan-solid px-3 py-1 text-[10.5px] font-bold shrink-0"
             >
-              Go
+              LOCK
             </button>
           </div>
 
-          <form onSubmit={handlePasteSubmit} className="sm:col-span-4 flex items-center gap-1.5 bg-[#070d19] p-1.5 rounded-xl border border-slate-800">
+          <form onSubmit={handlePasteSubmit} className="sm:col-span-4 flex items-center gap-1.5 bg-[#050b12] p-1.5 rounded border border-[#152232]">
             <input
               type="text"
               value={pasteCoords}
               onChange={(e) => setPasteCoords(e.target.value)}
-              placeholder="Paste coords (13.0827, 80.2707)"
-              className="w-full bg-transparent text-xs text-white placeholder-slate-500 focus:outline-none font-sans px-2 py-0.5"
+              placeholder="Paste Lat, Lon"
+              className="w-full bg-transparent text-xs text-white placeholder-slate-600 focus:outline-none font-mono-tech px-2 py-0.5"
             />
             <button
               type="submit"
-              className="btn-sky-secondary px-2.5 py-1 text-[11px] flex-shrink-0"
+              className="btn-dark-outline px-2.5 py-1 text-[10.5px] shrink-0 font-bold"
             >
-              Paste
+              APPLY
             </button>
           </form>
 
           <div className="sm:col-span-3 flex items-center justify-end">
             <button
               onClick={handleLocateMe}
-              className="w-full btn-sky-secondary py-1.5 px-3 text-xs flex items-center justify-center gap-1.5"
+              className="w-full btn-dark-outline py-1.5 px-3 text-xs flex items-center justify-center gap-1.5 font-mono-tech font-bold"
             >
-              <Navigation className="w-3.5 h-3.5 text-sky-400" />
-              <span>Locate Me</span>
+              <Navigation className="w-3 h-3 text-[#00f0ff]" />
+              <span>LOCATE ME</span>
             </button>
           </div>
-
         </div>
       </div>
 
-      {/* Main Map Container */}
-      <div className="relative w-full rounded-2xl overflow-hidden border border-slate-800 bg-[#070d19] shadow-2xl flex flex-col" style={{ height: '540px' }}>
+      {/* Main Reconnaissance Map Container */}
+      <div className="relative w-full rounded border border-[#152232] bg-[#03070d] shadow-2xl flex-1 min-h-[420px] overflow-hidden">
         
-        {/* Search Bar Overlay */}
-        <div className="absolute top-4 left-4 right-4 z-[1000] flex flex-wrap items-center justify-between gap-3 pointer-events-none">
-          <form onSubmit={handleSearch} className="flex items-center gap-2 pointer-events-auto bg-[#070d19]/90 backdrop-blur-md border border-slate-700/80 rounded-xl px-3 py-1.5 shadow-xl min-w-[280px]">
-            <Search className="w-4 h-4 text-sky-400" />
+        {/* Floating Search & Layer Toggle Controls */}
+        <div className="absolute top-3 left-3 right-3 z-[1000] flex flex-wrap items-center justify-between gap-2.5 pointer-events-none">
+          <form onSubmit={handleSearch} className="flex items-center gap-2 pointer-events-auto bg-[#0a111a]/90 backdrop-blur-md border border-[#1e3146] rounded px-3 py-1.5 shadow-xl min-w-[260px]">
+            <Search className="w-3.5 h-3.5 text-[#00f0ff]" />
             <input
               type="text"
-              placeholder="Search location (e.g. Chennai, Valencia...)"
+              placeholder="Search target place (e.g. Valencia, Chennai)..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="bg-transparent text-xs text-white placeholder-slate-400 focus:outline-none w-full"
+              className="bg-transparent text-xs text-white placeholder-slate-500 focus:outline-none w-full font-mono-tech"
             />
-            <button type="submit" disabled={isSearching} className="btn-sky-primary text-xs px-3 py-1">
-              {isSearching ? '...' : 'Search'}
+            <button type="submit" disabled={isSearching} className="btn-cyan-solid text-[10.5px] px-2.5 py-0.5 font-mono-tech font-bold">
+              {isSearching ? '...' : 'SEEK'}
             </button>
           </form>
 
           <button
             onClick={() => setBaseLayerType(baseLayerType === 'dark' ? 'satellite' : 'dark')}
-            className="pointer-events-auto flex items-center gap-1.5 text-xs bg-[#070d19]/90 hover:bg-slate-800 text-slate-200 border border-slate-700 rounded-xl px-3.5 py-2 shadow-xl backdrop-blur-md transition-all font-medium"
+            className="pointer-events-auto flex items-center gap-1.5 text-xs bg-[#0a111a]/90 hover:bg-[#101b26] text-slate-200 border border-[#1e3146] rounded px-3 py-1.5 shadow-xl backdrop-blur-md transition-all font-mono-tech font-bold"
           >
-            <Layers className="w-3.5 h-3.5 text-sky-400" />
-            <span>{baseLayerType === 'dark' ? 'Satellite Base' : 'Dark Base'}</span>
+            <Layers className="w-3.5 h-3.5 text-[#00f0ff]" />
+            <span>{baseLayerType === 'dark' ? 'SATELLITE BASEMAP' : 'DEEP SPACE DARK'}</span>
           </button>
         </div>
 
         {/* Map Canvas */}
-        <div className="w-full h-full relative" style={{ height: '100%', minHeight: '480px' }}>
+        <div className="w-full h-full relative" style={{ height: '100%', minHeight: '420px' }}>
           <MapContainer
             center={mapCenter}
             zoom={zoom}
             zoomControl={true}
-            style={{ height: '100%', width: '100%', backgroundColor: '#030712', cursor: 'crosshair' }}
+            style={{ height: '100%', width: '100%', backgroundColor: '#03070d', cursor: 'crosshair' }}
           >
             <MapClickAndCenterHandler 
               center={mapCenter} 
@@ -319,13 +315,12 @@ export default function MapViewer({
               />
             )}
 
-            {/* Clicked Marker */}
+            {/* Target Marker */}
             <Marker position={mapCenter}>
               <Popup className="text-xs">
-                <div className="p-1 space-y-1 font-sans">
-                  <p className="font-bold text-slate-900">Selected AOI Center</p>
-                  <p className="font-mono text-[11px]">Lat: {mapCenter[0]} | Lon: {mapCenter[1]}</p>
-                  <p className="text-[10px] text-sky-700 font-semibold">Click 'Run SatQuery Analysis' to process this land area!</p>
+                <div className="p-1 space-y-1 font-mono-tech">
+                  <p className="font-bold text-slate-900">AOI TARGET CENTER</p>
+                  <p className="text-[10px] text-slate-700">Lat: {mapCenter[0]} | Lon: {mapCenter[1]}</p>
                 </div>
               </Popup>
             </Marker>
@@ -359,21 +354,23 @@ export default function MapViewer({
 
           </MapContainer>
 
-          {/* Bounding Box Info Badge */}
-          <div className="absolute bottom-4 left-4 z-[1000] bg-[#070d19]/90 backdrop-blur-md border border-slate-800 rounded-xl p-3 shadow-xl max-w-sm text-xs space-y-1">
-            <div className="flex items-center justify-between text-slate-300 font-medium">
-              <span className="flex items-center gap-1.5 text-sky-400 font-semibold font-sans">
-                <MapPin className="w-3.5 h-3.5" /> Selected Target Location
+          {/* Floating Reconnaissance AOI Telemetry Badge */}
+          <div className="absolute bottom-3 left-3 z-[1000] bg-[#0a111a]/95 backdrop-blur-md border border-[#1e3146] rounded p-2.5 shadow-xl max-w-xs text-xs space-y-1 font-mono-tech tech-corners">
+            <div className="flex items-center justify-between text-slate-300 font-bold">
+              <span className="flex items-center gap-1.5 text-[#00f0ff]">
+                <MapPin className="w-3.5 h-3.5" /> RECON TARGET
               </span>
-              <span className="text-slate-400 font-mono-tech">~{areaSqKm} km²</span>
+              <span className="text-slate-400">~{areaSqKm} km²</span>
             </div>
-            <p className="text-[11px] text-slate-400 font-mono-tech">
-              Center: [{mapCenter[0]}, {mapCenter[1]}]
+            <p className="text-[10px] text-slate-400">
+              CENTER: [{mapCenter[0]}, {mapCenter[1]}] • ZOOM {zoom}
             </p>
           </div>
 
         </div>
+
       </div>
+
     </div>
   );
 }

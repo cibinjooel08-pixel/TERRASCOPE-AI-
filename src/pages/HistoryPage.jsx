@@ -43,14 +43,14 @@ export default function HistoryPage({ onSelectHistoryItem }) {
 
       {/* Filter & Search Bar */}
       <div className="flex flex-wrap items-center justify-between gap-4">
-        <div className="flex items-center gap-1.5 bg-[#07090b] p-1 rounded border border-[#20252b] text-xs font-mono-tech">
+        <div className="flex items-center gap-1.5 bg-[#060b12] p-1 rounded border border-[#152232] text-xs font-mono-tech">
           {['all', 'flood', 'vegetation', 'change', 'sar'].map((type) => (
             <button
               key={type}
               onClick={() => setFilterType(type)}
               className={`px-3 py-1.5 rounded uppercase transition-all ${
                 filterType === type
-                  ? 'bg-[#11151a] text-[#00f0ff] font-bold border border-[#00f0ff]/30'
+                  ? 'bg-[#0c1622] text-[#00f0ff] font-bold border border-[#00f0ff]/40 shadow-[0_0_10px_rgba(0,240,255,0.15)]'
                   : 'text-slate-400 hover:text-white'
               }`}
             >
@@ -72,7 +72,7 @@ export default function HistoryPage({ onSelectHistoryItem }) {
       </div>
 
       {/* Archive List Table */}
-      <div className="panel-aerospace p-6 space-y-4">
+      <div className="panel-aerospace p-6 space-y-4 tech-corners">
         {isLoading ? (
           <div className="p-8 text-center text-xs font-mono-tech text-slate-400 flex items-center justify-center gap-2">
             <div className="w-4 h-4 border-2 border-[#00f0ff] border-t-transparent rounded-full animate-spin" />
@@ -86,7 +86,7 @@ export default function HistoryPage({ onSelectHistoryItem }) {
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse text-xs font-mono-tech">
               <thead>
-                <tr className="border-b border-[#20252b] text-slate-500 text-[10px] uppercase">
+                <tr className="border-b border-[#152232] text-slate-500 text-[10px] uppercase">
                   <th className="py-2.5 px-3">MISSION ID</th>
                   <th className="py-2.5 px-3">SPECIALIST</th>
                   <th className="py-2.5 px-3">LOCATION</th>
@@ -97,22 +97,26 @@ export default function HistoryPage({ onSelectHistoryItem }) {
                   <th className="py-2.5 px-3 text-right">REPLAY</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#20252b]">
+              <tbody className="divide-y divide-[#152232]">
                 {filteredList.map((item, idx) => (
                   <tr
                     key={idx}
                     onClick={() => onSelectHistoryItem(item.analysis_id)}
-                    className="hover:bg-[#161b22] cursor-pointer transition-colors"
+                    className="hover:bg-[#0c1622] cursor-pointer transition-colors group"
                   >
-                    <td className="py-3 px-3 font-bold text-white">{item.analysis_id}</td>
+                    <td className="py-3 px-3 font-bold text-white group-hover:text-[#00f0ff] transition-colors">{item.analysis_id}</td>
                     <td className="py-3 px-3 text-sky-400 uppercase">{item.specialist || 'Earth Observation'}</td>
                     <td className="py-3 px-3 text-slate-300 font-semibold">{item.location_label}</td>
                     <td className="py-3 px-3 text-slate-400 truncate max-w-[180px]">"{item.query}"</td>
                     <td className="py-3 px-3 text-slate-500">{item.date_a} → {item.date_b}</td>
                     <td className="py-3 px-3 text-rose-400 font-bold">{item.change_percentage}%</td>
-                    <td className="py-3 px-3 text-emerald-400">{item.confidence_pct}%</td>
+                    <td className="py-3 px-3">
+                      <span className="badge-telemetry badge-telemetry-emerald text-[9px]">
+                        {item.confidence_pct}%
+                      </span>
+                    </td>
                     <td className="py-3 px-3 text-right">
-                      <ChevronRight className="w-4 h-4 text-slate-500 inline" />
+                      <ChevronRight className="w-4 h-4 text-slate-500 group-hover:text-[#00f0ff] inline transition-colors" />
                     </td>
                   </tr>
                 ))}

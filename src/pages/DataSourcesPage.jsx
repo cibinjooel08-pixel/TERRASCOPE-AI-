@@ -41,7 +41,7 @@ export default function DataSourcesPage() {
 
       {/* Real-time OAuth Diagnostic Card */}
       <div className="panel-aerospace-hero p-6 space-y-6 tech-corners">
-        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#20252b] pb-4">
+        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#152232] pb-4">
           <div className="flex items-center gap-3">
             <ShieldCheck className="w-5 h-5 text-emerald-400" />
             <h2 className="text-sm font-bold text-white font-heading uppercase tracking-wider">
@@ -53,14 +53,14 @@ export default function DataSourcesPage() {
             <button
               onClick={fetchAuth}
               disabled={testingConnection}
-              className="btn-aerospace-secondary px-4 py-2 text-xs flex items-center gap-2 uppercase"
+              className="btn-dark-outline px-4 py-2 text-xs flex items-center gap-2 uppercase"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${testingConnection ? 'animate-spin' : ''}`} />
               <span>{testingConnection ? 'PINGING CDSE...' : 'TEST LIVE FEED'}</span>
             </button>
 
-            <span className={`px-3 py-1 rounded text-xs font-bold ${
-              authHealth?.status === 'READY' ? 'bg-emerald-950/40 border border-emerald-500/40 text-emerald-400' : 'bg-amber-950/40 border border-amber-500/40 text-amber-400'
+            <span className={`badge-telemetry ${
+              authHealth?.status === 'READY' ? 'badge-telemetry-emerald' : 'badge-telemetry-amber'
             }`}>
               {authHealth?.status === 'READY' ? 'OAUTH2 ACTIVE' : 'BASELINE MODE'}
             </span>
@@ -69,7 +69,7 @@ export default function DataSourcesPage() {
 
         {/* Connection Status Details */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-mono-tech">
-          <div className="bg-[#07090b] p-4 rounded border border-[#20252b] space-y-2">
+          <div className="bg-[#060b12] p-4 rounded border border-[#152232] space-y-2 hover:border-[#1e344d] transition-colors">
             <p className="font-bold text-[#00f0ff] flex items-center gap-1.5 uppercase">
               <CheckCircle2 className="w-4 h-4 text-emerald-400" /> AUTHENTICATION STATUS
             </p>
@@ -81,7 +81,7 @@ export default function DataSourcesPage() {
             )}
           </div>
 
-          <div className="bg-[#07090b] p-4 rounded border border-[#20252b] space-y-2">
+          <div className="bg-[#060b12] p-4 rounded border border-[#152232] space-y-2 hover:border-[#1e344d] transition-colors">
             <p className="font-bold text-[#00f0ff] uppercase">OAUTH TOKEN ENDPOINT</p>
             <p className="text-slate-300 break-all text-[10px]">
               https://identity.dataspace.copernicus.eu/.../token
@@ -89,7 +89,7 @@ export default function DataSourcesPage() {
             <p className="text-[10px] text-slate-500">GRANT TYPE: client_credentials</p>
           </div>
 
-          <div className="bg-[#07090b] p-4 rounded border border-[#20252b] space-y-2">
+          <div className="bg-[#060b12] p-4 rounded border border-[#152232] space-y-2 hover:border-[#1e344d] transition-colors">
             <p className="font-bold text-[#00f0ff] uppercase">STAC CATALOG BASE URL</p>
             <p className="text-slate-300 break-all text-[10px]">
               https://sh.dataspace.copernicus.eu
@@ -102,7 +102,7 @@ export default function DataSourcesPage() {
       {/* Satellite Sensor Specs */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 font-mono-tech">
         <div className="panel-aerospace p-6 space-y-3 tech-corners">
-          <div className="flex items-center justify-between border-b border-[#20252b] pb-3">
+          <div className="flex items-center justify-between border-b border-[#152232] pb-3">
             <div className="flex items-center gap-2.5">
               <Globe className="w-5 h-5 text-[#00f0ff]" />
               <h3 className="text-sm font-bold text-white font-heading">SENTINEL-2 OPTICAL</h3>
@@ -112,7 +112,7 @@ export default function DataSourcesPage() {
           <p className="text-xs text-slate-300 leading-relaxed font-body">
             High-resolution multispectral imagery with 13 spectral bands ranging from visible light to short-wave infrared (SWIR).
           </p>
-          <div className="text-[11px] text-slate-400 space-y-1 pt-2 border-t border-[#20252b]">
+          <div className="text-[11px] text-slate-400 space-y-1 pt-2 border-t border-[#152232]">
             <p>• TRUE COLOR: B04 (RED), B03 (GREEN), B02 (BLUE)</p>
             <p>• FALSE COLOR: B08 (NIR), B04 (RED), B03 (GREEN)</p>
             <p>• NDVI INDEX: (B08 - B04) / (B08 + B04)</p>
@@ -122,7 +122,7 @@ export default function DataSourcesPage() {
         </div>
 
         <div className="panel-aerospace p-6 space-y-3 tech-corners">
-          <div className="flex items-center justify-between border-b border-[#20252b] pb-3">
+          <div className="flex items-center justify-between border-b border-[#152232] pb-3">
             <div className="flex items-center gap-2.5">
               <Satellite className="w-5 h-5 text-emerald-400" />
               <h3 className="text-sm font-bold text-white font-heading">SENTINEL-1 SAR RADAR</h3>
@@ -132,7 +132,7 @@ export default function DataSourcesPage() {
           <p className="text-xs text-slate-300 leading-relaxed font-body">
             All-weather C-band synthetic aperture radar imaging capable of penetrating cloud cover day or night.
           </p>
-          <div className="text-[11px] text-slate-400 space-y-1 pt-2 border-t border-[#20252b]">
+          <div className="text-[11px] text-slate-400 space-y-1 pt-2 border-t border-[#152232]">
             <p>• POLARIZATIONS: VV (VERTICAL), VH (CROSS-POL)</p>
             <p>• BACKSCATTER RATIO: VH / VV</p>
             <p>• FLOOD THRESHOLDING: BACKSCATTER DROP &lt; -15 DB</p>

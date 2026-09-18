@@ -27,13 +27,13 @@ export default function TimeSeriesPage() {
       </div>
 
       {/* Index Selector Bar */}
-      <div className="flex flex-wrap items-center gap-2 bg-[#07090b] p-2 rounded border border-[#20252b]">
+      <div className="flex flex-wrap items-center gap-2 bg-[#060b12] p-2 rounded border border-[#152232]">
         <span className="text-xs font-bold text-slate-400 font-mono-tech px-2">SELECT SPECTRAL INDEX:</span>
         
         <button
           onClick={() => setMetric('ndvi')}
           className={`px-3 py-1.5 rounded text-xs font-mono-tech font-bold transition-all ${
-            metric === 'ndvi' ? 'bg-[#11151a] text-emerald-400 border border-emerald-500/30' : 'text-slate-400 hover:text-white'
+            metric === 'ndvi' ? 'bg-[#0c1622] text-emerald-400 border border-emerald-500/40 shadow-[0_0_10px_rgba(16,185,129,0.15)]' : 'text-slate-400 hover:text-white'
           }`}
         >
           NDVI (VEGETATION VIGOR)
@@ -42,7 +42,7 @@ export default function TimeSeriesPage() {
         <button
           onClick={() => setMetric('ndwi')}
           className={`px-3 py-1.5 rounded text-xs font-mono-tech font-bold transition-all ${
-            metric === 'ndwi' ? 'bg-[#11151a] text-[#00f0ff] border border-[#00f0ff]/30' : 'text-slate-400 hover:text-white'
+            metric === 'ndwi' ? 'bg-[#0c1622] text-[#00f0ff] border border-[#00f0ff]/40 shadow-[0_0_10px_rgba(0,240,255,0.15)]' : 'text-slate-400 hover:text-white'
           }`}
         >
           NDWI (WATER INDEX)
@@ -51,7 +51,7 @@ export default function TimeSeriesPage() {
         <button
           onClick={() => setMetric('ndbi')}
           className={`px-3 py-1.5 rounded text-xs font-mono-tech font-bold transition-all ${
-            metric === 'ndbi' ? 'bg-[#11151a] text-rose-400 border border-rose-500/30' : 'text-slate-400 hover:text-white'
+            metric === 'ndbi' ? 'bg-[#0c1622] text-rose-400 border border-rose-500/40 shadow-[0_0_10px_rgba(244,63,94,0.15)]' : 'text-slate-400 hover:text-white'
           }`}
         >
           NDBI (BUILT-UP INDEX)
@@ -59,8 +59,8 @@ export default function TimeSeriesPage() {
       </div>
 
       {/* Chart Panel */}
-      <div className="panel-aerospace p-6 space-y-4">
-        <div className="flex items-center justify-between border-b border-[#20252b] pb-3">
+      <div className="panel-aerospace p-6 space-y-4 tech-corners">
+        <div className="flex items-center justify-between border-b border-[#152232] pb-3">
           <span className="text-xs font-bold text-white font-heading uppercase tracking-wider">
             ORBITAL REVISIT TIME SERIES TREND (2024-01 TO 2024-06)
           </span>

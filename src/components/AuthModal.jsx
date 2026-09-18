@@ -80,27 +80,27 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }) {
   };
 
   return (
-    <div className="fixed inset-0 z-[5000] flex items-center justify-center p-4 bg-[#020406]/90 backdrop-blur-md overflow-y-auto">
+    <div className="fixed inset-0 z-[5000] flex items-center justify-center p-4 bg-[#020509]/90 backdrop-blur-md overflow-y-auto">
       
       {/* Container Box */}
-      <div className="relative w-full max-w-4xl bg-[#080d12] border border-[#172332] rounded-xl shadow-2xl overflow-hidden grid grid-cols-1 md:grid-cols-12 my-8">
+      <div className="relative w-full max-w-4xl bg-[#0a111a] border border-[#152232] rounded-lg shadow-[0_0_50px_rgba(0,0,0,0.8)] overflow-hidden grid grid-cols-1 md:grid-cols-12 my-8 tech-corners">
         
         {/* Close Modal Control */}
         {onClose && (
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 z-20 p-1.5 rounded bg-[#0c1218] hover:bg-[#121a24] text-slate-400 hover:text-white border border-[#172332] transition-colors"
+            className="absolute top-4 right-4 z-20 p-1.5 rounded bg-[#060b12] hover:bg-[#0e1824] text-slate-400 hover:text-white border border-[#152232] transition-colors"
           >
             <X className="w-4 h-4" />
           </button>
         )}
 
         {/* LEFT COLUMN: Panoramic Earth Horizon Branding */}
-        <div className="md:col-span-6 bg-gradient-to-b from-[#05080b] via-[#080d12] to-[#020406] p-8 flex flex-col justify-between border-b md:border-b-0 md:border-r border-[#172332] relative overflow-hidden">
+        <div className="md:col-span-6 bg-gradient-to-b from-[#060b12] via-[#08111b] to-[#020509] p-8 flex flex-col justify-between border-b md:border-b-0 md:border-r border-[#152232] relative overflow-hidden">
           
           <div className="space-y-4 relative z-10">
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded bg-[#080d12] border border-[#00f0ff]/40 flex items-center justify-center">
+              <div className="w-8 h-8 rounded bg-[#060b12] border border-[#00f0ff]/40 shadow-[0_0_10px_rgba(0,240,255,0.2)] flex items-center justify-center">
                 <Satellite className="w-4 h-4 text-[#00f0ff]" />
               </div>
               <div>
@@ -125,7 +125,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }) {
             </div>
           </div>
 
-          <div className="space-y-2 pt-6 relative z-10 border-t border-[#172332] mt-8">
+          <div className="space-y-2 pt-6 relative z-10 border-t border-[#152232] mt-8">
             <p className="text-xs font-mono-tech text-[#00f0ff] font-bold tracking-widest uppercase">
               REAL DATA. REAL INSIGHTS. A BRIGHTER TOMORROW.
             </p>
@@ -135,11 +135,11 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }) {
         </div>
 
         {/* RIGHT COLUMN: Clean Authentication Form */}
-        <div className="md:col-span-6 p-6 sm:p-10 flex flex-col justify-center space-y-6 bg-[#05080b]">
+        <div className="md:col-span-6 p-6 sm:p-10 flex flex-col justify-center space-y-6 bg-[#060b12]">
           
           {/* Header & Mode Switcher */}
           <div className="space-y-2">
-            <div className="flex items-center justify-between border-b border-[#172332] pb-3">
+            <div className="flex items-center justify-between border-b border-[#152232] pb-3">
               <div>
                 <h3 className="text-base font-bold text-white font-heading tracking-tight">
                   TERRASCOPE <span className="text-[#00f0ff]">AI</span>
@@ -149,12 +149,12 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }) {
                 </p>
               </div>
 
-              <div className="flex items-center gap-1 bg-[#080d12] p-1 rounded border border-[#172332]">
+              <div className="flex items-center gap-1 bg-[#020509] p-1 rounded border border-[#152232]">
                 <button
                   type="button"
                   onClick={() => handleModeSwitch('login')}
                   className={`px-2.5 py-1 text-[10px] font-mono-tech rounded transition-all ${
-                    authMode === 'login' ? 'bg-[#0c1218] text-[#00f0ff] font-bold border border-[#00f0ff]/40' : 'text-slate-400'
+                    authMode === 'login' ? 'bg-[#0c1622] text-[#00f0ff] font-bold border border-[#00f0ff]/40 shadow-[0_0_8px_rgba(0,240,255,0.2)]' : 'text-slate-400 hover:text-white'
                   }`}
                 >
                   SIGN IN
@@ -163,7 +163,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }) {
                   type="button"
                   onClick={() => handleModeSwitch('register')}
                   className={`px-2.5 py-1 text-[10px] font-mono-tech rounded transition-all ${
-                    authMode === 'register' ? 'bg-[#0c1218] text-[#00f0ff] font-bold border border-[#00f0ff]/40' : 'text-slate-400'
+                    authMode === 'register' ? 'bg-[#0c1622] text-[#00f0ff] font-bold border border-[#00f0ff]/40 shadow-[0_0_8px_rgba(0,240,255,0.2)]' : 'text-slate-400 hover:text-white'
                   }`}
                 >
                   REGISTER
@@ -262,7 +262,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }) {
                     type="checkbox"
                     checked={rememberMe}
                     onChange={(e) => setRememberMe(e.target.checked)}
-                    className="rounded bg-[#080d12] border-[#172332] text-[#00f0ff] focus:ring-0"
+                    className="rounded bg-[#020509] border-[#152232] text-[#00f0ff] focus:ring-0"
                   />
                   <span>Remember me</span>
                 </label>
@@ -293,7 +293,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }) {
           </form>
 
           {/* Toggle Link */}
-          <div className="text-center pt-2 text-xs font-mono-tech text-slate-400 border-t border-[#172332]">
+          <div className="text-center pt-2 text-xs font-mono-tech text-slate-400 border-t border-[#152232]">
             {authMode === 'login' ? (
               <p>
                 Don't have an account?{' '}

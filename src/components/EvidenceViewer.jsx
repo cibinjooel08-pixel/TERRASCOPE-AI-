@@ -82,21 +82,21 @@ export default function EvidenceViewer({ evidence: propEvidence, analysisId: pro
   };
 
   const renderMetadataFooter = (dateStr, isBefore = true) => (
-    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2.5 border-t border-[#172332] text-[10px] font-mono-tech text-slate-400">
+    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2.5 border-t border-[#152232] text-[10px] font-mono-tech text-slate-400">
       <div>
-        <span className="text-slate-500 block">SENSOR</span>
+        <span className="text-slate-500 block text-[9px] uppercase tracking-wider">SENSOR</span>
         <span className="text-white font-bold">{provenance.primary_satellite || 'SENTINEL-2 L2A'}</span>
       </div>
       <div>
-        <span className="text-slate-500 block">ACQUISITION</span>
+        <span className="text-slate-500 block text-[9px] uppercase tracking-wider">ACQUISITION</span>
         <span className="text-[#00f0ff] font-bold">{dateStr || (isBefore ? provenance.requested_date_a : provenance.requested_date_b) || '2024-05-01'}</span>
       </div>
       <div>
-        <span className="text-slate-500 block">RESOLUTION</span>
+        <span className="text-slate-500 block text-[9px] uppercase tracking-wider">RESOLUTION</span>
         <span className="text-slate-200">{provenance.spatial_resolution || '10 METERS'}</span>
       </div>
       <div>
-        <span className="text-slate-500 block">CRS / BOUNDS</span>
+        <span className="text-slate-500 block text-[9px] uppercase tracking-wider">CRS / BOUNDS</span>
         <span className="text-slate-300 truncate block">{formattedBbox}</span>
       </div>
     </div>
@@ -106,11 +106,11 @@ export default function EvidenceViewer({ evidence: propEvidence, analysisId: pro
     const isErr = errorStates[key];
 
     return (
-      <div className="panel-aerospace p-4 space-y-3 flex flex-col justify-between h-full border border-[#172332] bg-[#05080b] rounded-xl shadow-2xl">
+      <div className="panel-aerospace p-4 space-y-3 flex flex-col justify-between h-full tech-corners">
         {/* Header Label & Technical Viewer Controls */}
-        <div className="flex items-center justify-between border-b border-[#172332] pb-2.5 font-mono-tech">
+        <div className="flex items-center justify-between border-b border-[#152232] pb-2.5 font-mono-tech">
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-[#00f0ff] animate-pulse" />
+            <span className="w-2 h-2 rounded-full bg-[#00f0ff] shadow-[0_0_8px_#00f0ff] animate-pulse" />
             <span className="text-xs font-bold text-white uppercase tracking-wider">{title}</span>
           </div>
           
@@ -118,7 +118,7 @@ export default function EvidenceViewer({ evidence: propEvidence, analysisId: pro
             <button
               type="button"
               onClick={() => setZoomFn(prev => Math.min(3, prev + 0.25))}
-              className="p-1 rounded bg-[#080d12] hover:bg-[#121a24] text-slate-300 hover:text-[#00f0ff] border border-[#172332] transition-colors"
+              className="p-1 rounded bg-[#060b12] hover:bg-[#0e1824] text-slate-300 hover:text-[#00f0ff] border border-[#152232] hover:border-[#00f0ff]/40 transition-colors"
               title="Zoom In"
             >
               <ZoomIn className="w-3.5 h-3.5" />
@@ -126,7 +126,7 @@ export default function EvidenceViewer({ evidence: propEvidence, analysisId: pro
             <button
               type="button"
               onClick={() => setZoomFn(prev => Math.max(1, prev - 0.25))}
-              className="p-1 rounded bg-[#080d12] hover:bg-[#121a24] text-slate-300 hover:text-[#00f0ff] border border-[#172332] transition-colors"
+              className="p-1 rounded bg-[#060b12] hover:bg-[#0e1824] text-slate-300 hover:text-[#00f0ff] border border-[#152232] hover:border-[#00f0ff]/40 transition-colors"
               title="Zoom Out"
             >
               <ZoomOut className="w-3.5 h-3.5" />
@@ -134,7 +134,7 @@ export default function EvidenceViewer({ evidence: propEvidence, analysisId: pro
             <button
               type="button"
               onClick={() => setZoomFn(1)}
-              className="p-1 rounded bg-[#080d12] hover:bg-[#121a24] text-slate-300 hover:text-[#00f0ff] border border-[#172332] transition-colors"
+              className="p-1 rounded bg-[#060b12] hover:bg-[#0e1824] text-slate-300 hover:text-[#00f0ff] border border-[#152232] hover:border-[#00f0ff]/40 transition-colors"
               title="Reset Zoom"
             >
               <RotateCcw className="w-3.5 h-3.5" />
@@ -142,7 +142,7 @@ export default function EvidenceViewer({ evidence: propEvidence, analysisId: pro
             <button
               type="button"
               onClick={() => setFullscreenImage({ url: imgUrl, title, dateStr })}
-              className="p-1 rounded bg-[#080d12] hover:bg-[#121a24] text-slate-300 hover:text-[#00f0ff] border border-[#172332] transition-colors"
+              className="p-1 rounded bg-[#060b12] hover:bg-[#0e1824] text-slate-300 hover:text-[#00f0ff] border border-[#152232] hover:border-[#00f0ff]/40 transition-colors"
               title="Fullscreen View"
             >
               <Maximize2 className="w-3.5 h-3.5" />
@@ -151,7 +151,7 @@ export default function EvidenceViewer({ evidence: propEvidence, analysisId: pro
         </div>
 
         {/* Satellite Imagery Frame (aspect-square with object-contain to preserve natural resolution & 100% full geometry) */}
-        <div className="relative w-full aspect-square bg-[#020406] rounded border border-[#172332] overflow-hidden flex items-center justify-center">
+        <div className="relative w-full aspect-square bg-[#020509] rounded border border-[#152232] overflow-hidden flex items-center justify-center">
           {isErr ? (
             <div className="p-6 text-center space-y-3 font-mono-tech">
               <AlertTriangle className="w-8 h-8 text-amber-400 mx-auto animate-bounce" />
@@ -185,7 +185,7 @@ export default function EvidenceViewer({ evidence: propEvidence, analysisId: pro
             </div>
           )}
 
-          <div className="absolute top-2 left-2 px-2 py-0.5 rounded bg-black/80 backdrop-blur-md border border-white/10 text-[9px] font-mono-tech text-[#00f0ff]">
+          <div className="absolute top-2 left-2 px-2 py-0.5 rounded bg-black/80 backdrop-blur-md border border-[#152232] text-[9px] font-mono-tech text-[#00f0ff] shadow-sm">
             ZOOM: {zoomVal.toFixed(2)}x
           </div>
         </div>
@@ -201,7 +201,7 @@ export default function EvidenceViewer({ evidence: propEvidence, analysisId: pro
       
       {/* 1. EXECUTIVE REPORT HEADLINE & CONCLUSION BANNER */}
       <div className="panel-aerospace-hero p-6 md:p-8 space-y-6 tech-corners">
-        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#20252b] pb-4">
+        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#152232] pb-4">
           <div className="space-y-1">
             <div className="flex items-center gap-2">
               <span className="badge-telemetry badge-telemetry-emerald">MISSION COMPLETE</span>
@@ -230,7 +230,7 @@ export default function EvidenceViewer({ evidence: propEvidence, analysisId: pro
           if (intent === 'flood') {
             return (
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-2 font-mono-tech">
-                <div className="bg-[#07090b] p-4 rounded border border-[#20252b]">
+                <div className="bg-[#060b12] p-4 rounded border border-[#152232]">
                   <span className="text-[10px] text-slate-500 tracking-wider">FLOODED WATER EXTENT</span>
                   <p className="text-2xl font-bold text-cyan-400 mt-1">
                     {specialist_result.flooded_area_sq_km || change_metrics.affected_area_sq_km || 0.0} km²
@@ -239,14 +239,14 @@ export default function EvidenceViewer({ evidence: propEvidence, analysisId: pro
                     ({((specialist_result.flooded_area_sq_km || change_metrics.affected_area_sq_km || 0) * 100).toFixed(1)} HECTARES)
                   </p>
                 </div>
-                <div className="bg-[#07090b] p-4 rounded border border-[#20252b]">
+                <div className="bg-[#060b12] p-4 rounded border border-[#152232]">
                   <span className="text-[10px] text-slate-500 tracking-wider">WATER EXPANSION RATIO</span>
                   <p className="text-2xl font-bold text-[#00f0ff] mt-1">
                     {specialist_result.flooded_percentage || change_metrics.change_percentage || 0.0}%
                   </p>
                   <p className="text-[10px] text-slate-400">SAR SPECULAR WATER REFLECTION</p>
                 </div>
-                <div className="bg-[#07090b] p-4 rounded border border-[#20252b] flex items-center gap-4">
+                <div className="bg-[#060b12] p-4 rounded border border-[#152232] flex items-center gap-4">
                   <div className="w-12 h-12 rounded-full border-2 border-[#00f0ff] flex items-center justify-center font-bold text-xs text-[#00f0ff]">
                     {Math.round(confidenceValue)}%
                   </div>
@@ -263,21 +263,21 @@ export default function EvidenceViewer({ evidence: propEvidence, analysisId: pro
           if (intent === 'flood_risk') {
             return (
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-2 font-mono-tech">
-                <div className="bg-[#07090b] p-4 rounded border border-[#20252b]">
+                <div className="bg-[#060b12] p-4 rounded border border-[#152232]">
                   <span className="text-[10px] text-slate-500 tracking-wider">HISTORICAL FLOOD SUSCEPTIBILITY</span>
                   <p className="text-2xl font-bold text-amber-400 mt-1">
                     {specialist_result.risk_score || 45.0}%
                   </p>
                   <p className="text-[10px] text-slate-400">HISTORICAL INUNDATION FREQUENCY</p>
                 </div>
-                <div className="bg-[#07090b] p-4 rounded border border-[#20252b]">
+                <div className="bg-[#060b12] p-4 rounded border border-[#152232]">
                   <span className="text-[10px] text-slate-500 tracking-wider">PREDICTIVE MODEL DISCLAIMER</span>
                   <p className="text-xs font-bold text-sky-400 mt-2">
                     HISTORICAL SCREENING ONLY
                   </p>
                   <p className="text-[10px] text-slate-400 mt-1">FUTURE FORECASTING NOT SUPPORTED</p>
                 </div>
-                <div className="bg-[#07090b] p-4 rounded border border-[#20252b] flex items-center gap-4">
+                <div className="bg-[#060b12] p-4 rounded border border-[#152232] flex items-center gap-4">
                   <div className="w-12 h-12 rounded-full border-2 border-[#00f0ff] flex items-center justify-center font-bold text-xs text-[#00f0ff]">
                     {Math.round(confidenceValue)}%
                   </div>
@@ -295,21 +295,21 @@ export default function EvidenceViewer({ evidence: propEvidence, analysisId: pro
             const stats = specialist_result.field_stats || {};
             return (
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-2 font-mono-tech">
-                <div className="bg-[#07090b] p-4 rounded border border-[#20252b]">
+                <div className="bg-[#060b12] p-4 rounded border border-[#152232]">
                   <span className="text-[10px] text-slate-500 tracking-wider">MEAN NDVI CANOPY HEALTH</span>
                   <p className="text-2xl font-bold text-emerald-400 mt-1">
                     {stats.mean_ndvi || 0.58}
                   </p>
                   <p className="text-[10px] text-slate-400">RANGE: [{stats.min_ndvi || 0.12} - {stats.max_ndvi || 0.84}]</p>
                 </div>
-                <div className="bg-[#07090b] p-4 rounded border border-[#20252b]">
+                <div className="bg-[#060b12] p-4 rounded border border-[#152232]">
                   <span className="text-[10px] text-slate-500 tracking-wider">NDVI CANOPY CHANGE</span>
                   <p className={`text-2xl font-bold mt-1 ${(stats.ndvi_change || 0) < 0 ? 'text-rose-400' : 'text-emerald-400'}`}>
                     {stats.ndvi_change > 0 ? `+${stats.ndvi_change}` : (stats.ndvi_change || -0.08)}
                   </p>
                   <p className="text-[10px] text-slate-400">{stats.trend || 'Crop Stress Screening'}</p>
                 </div>
-                <div className="bg-[#07090b] p-4 rounded border border-[#20252b] flex items-center gap-4">
+                <div className="bg-[#060b12] p-4 rounded border border-[#152232] flex items-center gap-4">
                   <div className="w-12 h-12 rounded-full border-2 border-[#00f0ff] flex items-center justify-center font-bold text-xs text-[#00f0ff]">
                     {Math.round(confidenceValue)}%
                   </div>
@@ -326,21 +326,21 @@ export default function EvidenceViewer({ evidence: propEvidence, analysisId: pro
           if (intent === 'urban') {
             return (
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-2 font-mono-tech">
-                <div className="bg-[#07090b] p-4 rounded border border-[#20252b]">
+                <div className="bg-[#060b12] p-4 rounded border border-[#152232]">
                   <span className="text-[10px] text-slate-500 tracking-wider">BUILT-UP DENSITY AREA</span>
                   <p className="text-2xl font-bold text-amber-400 mt-1">
                     {specialist_result.built_up_area_sq_km || change_metrics.affected_area_sq_km || 0.0} km²
                   </p>
                   <p className="text-[10px] text-slate-400">IMPERVIOUS SURFACE FOOTPRINT</p>
                 </div>
-                <div className="bg-[#07090b] p-4 rounded border border-[#20252b]">
+                <div className="bg-[#060b12] p-4 rounded border border-[#152232]">
                   <span className="text-[10px] text-slate-500 tracking-wider">URBAN EXPANSION RATIO</span>
                   <p className="text-2xl font-bold text-[#00f0ff] mt-1">
                     {specialist_result.urban_growth_percentage || change_metrics.change_percentage || 0.0}%
                   </p>
                   <p className="text-[10px] text-slate-400">NDBI SWIR/NIR SPECTRAL INDEX</p>
                 </div>
-                <div className="bg-[#07090b] p-4 rounded border border-[#20252b] flex items-center gap-4">
+                <div className="bg-[#060b12] p-4 rounded border border-[#152232] flex items-center gap-4">
                   <div className="w-12 h-12 rounded-full border-2 border-[#00f0ff] flex items-center justify-center font-bold text-xs text-[#00f0ff]">
                     {Math.round(confidenceValue)}%
                   </div>
@@ -357,21 +357,21 @@ export default function EvidenceViewer({ evidence: propEvidence, analysisId: pro
           if (intent === 'coastal') {
             return (
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-2 font-mono-tech">
-                <div className="bg-[#07090b] p-4 rounded border border-[#20252b]">
+                <div className="bg-[#060b12] p-4 rounded border border-[#152232]">
                   <span className="text-[10px] text-slate-500 tracking-wider">SHORELINE POSITION SHIFT</span>
                   <p className="text-2xl font-bold text-teal-400 mt-1">
                     {specialist_result.shoreline_shift_meters || 12.5} METERS
                   </p>
                   <p className="text-[10px] text-slate-400">AVERAGE TRANSECT DISPLACEMENT</p>
                 </div>
-                <div className="bg-[#07090b] p-4 rounded border border-[#20252b]">
+                <div className="bg-[#060b12] p-4 rounded border border-[#152232]">
                   <span className="text-[10px] text-slate-500 tracking-wider">COASTAL EROSION AREA</span>
                   <p className="text-2xl font-bold text-[#00f0ff] mt-1">
                     {specialist_result.coastal_change_sq_km || change_metrics.affected_area_sq_km || 0.0} km²
                   </p>
                   <p className="text-[10px] text-slate-400">WATER-LAND BOUNDARY SHIFT</p>
                 </div>
-                <div className="bg-[#07090b] p-4 rounded border border-[#20252b] flex items-center gap-4">
+                <div className="bg-[#060b12] p-4 rounded border border-[#152232] flex items-center gap-4">
                   <div className="w-12 h-12 rounded-full border-2 border-[#00f0ff] flex items-center justify-center font-bold text-xs text-[#00f0ff]">
                     {Math.round(confidenceValue)}%
                   </div>
@@ -388,21 +388,21 @@ export default function EvidenceViewer({ evidence: propEvidence, analysisId: pro
           if (intent === 'landslide') {
             return (
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-2 font-mono-tech">
-                <div className="bg-[#07090b] p-4 rounded border border-[#20252b]">
+                <div className="bg-[#060b12] p-4 rounded border border-[#152232]">
                   <span className="text-[10px] text-slate-500 tracking-wider">SLOPE EVIDENCE LEVEL</span>
                   <p className="text-2xl font-bold text-fuchsia-400 mt-1">
                     {specialist_result.evidence_level || 'MODERATE'}
                   </p>
                   <p className="text-[10px] text-slate-400">GROUND INSTABILITY RATING</p>
                 </div>
-                <div className="bg-[#07090b] p-4 rounded border border-[#20252b]">
+                <div className="bg-[#060b12] p-4 rounded border border-[#152232]">
                   <span className="text-[10px] text-slate-500 tracking-wider">SAR BACKSCATTER ANOMALY</span>
                   <p className="text-2xl font-bold text-amber-400 mt-1">
                     {change_metrics.change_percentage || 0.0}%
                   </p>
                   <p className="text-[10px] text-slate-400">SENTINEL-1 VV/VH ANOMALY</p>
                 </div>
-                <div className="bg-[#07090b] p-4 rounded border border-[#20252b] flex items-center gap-4">
+                <div className="bg-[#060b12] p-4 rounded border border-[#152232] flex items-center gap-4">
                   <div className="w-12 h-12 rounded-full border-2 border-[#00f0ff] flex items-center justify-center font-bold text-xs text-[#00f0ff]">
                     {Math.round(confidenceValue)}%
                   </div>
@@ -419,21 +419,21 @@ export default function EvidenceViewer({ evidence: propEvidence, analysisId: pro
           if (intent === 'ambiguous') {
             return (
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-2 font-mono-tech">
-                <div className="bg-[#07090b] p-4 rounded border border-[#20252b]">
+                <div className="bg-[#060b12] p-4 rounded border border-[#152232]">
                   <span className="text-[10px] text-slate-500 tracking-wider">QUERY CLARIFICATION NOTICE</span>
                   <p className="text-sm font-bold text-amber-400 mt-2">
                     AMBIGUOUS QUERY
                   </p>
                   <p className="text-[10px] text-slate-400 mt-1">PLEASE SPECIFY OBSERVATION INTENT</p>
                 </div>
-                <div className="bg-[#07090b] p-4 rounded border border-[#20252b]">
+                <div className="bg-[#060b12] p-4 rounded border border-[#152232]">
                   <span className="text-[10px] text-slate-500 tracking-wider">SUGGESTED INTENTS</span>
                   <p className="text-xs text-[#00f0ff] mt-1 font-bold">
                     Flood | Crop Health | Urban | Coastal
                   </p>
                   <p className="text-[10px] text-slate-400">SPECIFIC NL PROMPTS</p>
                 </div>
-                <div className="bg-[#07090b] p-4 rounded border border-[#20252b] flex items-center gap-4">
+                <div className="bg-[#060b12] p-4 rounded border border-[#152232] flex items-center gap-4">
                   <div className="w-12 h-12 rounded-full border-2 border-[#00f0ff] flex items-center justify-center font-bold text-xs text-[#00f0ff]">
                     {Math.round(confidenceValue)}%
                   </div>
@@ -450,7 +450,7 @@ export default function EvidenceViewer({ evidence: propEvidence, analysisId: pro
           // Default: General Change Detection
           return (
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-2 font-mono-tech">
-              <div className="bg-[#07090b] p-4 rounded border border-[#20252b]">
+              <div className="bg-[#060b12] p-4 rounded border border-[#152232]">
                 <span className="text-[10px] text-slate-500 tracking-wider">AFFECTED SURFACE AREA</span>
                 <p className="text-2xl font-bold text-rose-400 mt-1">
                   {change_metrics.affected_area_sq_km || 0.0} km²
@@ -460,7 +460,7 @@ export default function EvidenceViewer({ evidence: propEvidence, analysisId: pro
                 </p>
               </div>
 
-              <div className="bg-[#07090b] p-4 rounded border border-[#20252b]">
+              <div className="bg-[#060b12] p-4 rounded border border-[#152232]">
                 <span className="text-[10px] text-slate-500 tracking-wider">CHANGE MAGNITUDE RATIO</span>
                 <p className="text-2xl font-bold text-amber-400 mt-1">
                   {change_metrics.change_percentage || 0.0}%
@@ -468,7 +468,7 @@ export default function EvidenceViewer({ evidence: propEvidence, analysisId: pro
                 <p className="text-[10px] text-slate-400">SPECTRAL DIFFERENCE SCORE</p>
               </div>
 
-              <div className="bg-[#07090b] p-4 rounded border border-[#20252b] flex items-center gap-4">
+              <div className="bg-[#060b12] p-4 rounded border border-[#152232] flex items-center gap-4">
                 <div className="w-12 h-12 rounded-full border-2 border-[#00f0ff] flex items-center justify-center font-bold text-xs text-[#00f0ff]">
                   {Math.round(confidenceValue)}%
                 </div>
@@ -485,7 +485,7 @@ export default function EvidenceViewer({ evidence: propEvidence, analysisId: pro
 
       {/* 2. VISUAL EVIDENCE EXPLORER & SATELLITE VIEWER WORKSTATION */}
       <div className="panel-aerospace p-6 space-y-6">
-        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#20252b] pb-4">
+        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#152232] pb-4">
           <div className="flex items-center gap-2.5">
             <ImageIcon className="w-5 h-5 text-[#00f0ff]" />
             <div>
@@ -499,12 +499,12 @@ export default function EvidenceViewer({ evidence: propEvidence, analysisId: pro
           </div>
 
           {/* Mode Switcher Tabs */}
-          <div className="flex items-center gap-1 bg-[#07090b] p-1 rounded border border-[#20252b] text-xs font-mono-tech">
+          <div className="flex items-center gap-1 bg-[#060b12] p-1 rounded border border-[#152232] text-xs font-mono-tech">
             <button
               type="button"
               onClick={() => setActiveTab('sidebyside')}
               className={`px-3 py-1.5 rounded transition-all ${
-                activeTab === 'sidebyside' ? 'bg-[#11151a] text-[#00f0ff] font-bold border border-[#00f0ff]/30' : 'text-slate-400 hover:text-white'
+                activeTab === 'sidebyside' ? 'bg-[#0c1622] text-[#00f0ff] font-bold border border-[#00f0ff]/40 shadow-[0_0_10px_rgba(0,240,255,0.15)]' : 'text-slate-400 hover:text-white'
               }`}
             >
               SIDE-BY-SIDE
@@ -513,7 +513,7 @@ export default function EvidenceViewer({ evidence: propEvidence, analysisId: pro
               type="button"
               onClick={() => setActiveTab('change')}
               className={`px-3 py-1.5 rounded transition-all ${
-                activeTab === 'change' ? 'bg-[#11151a] text-[#00f0ff] font-bold border border-[#00f0ff]/30' : 'text-slate-400 hover:text-white'
+                activeTab === 'change' ? 'bg-[#0c1622] text-[#00f0ff] font-bold border border-[#00f0ff]/40 shadow-[0_0_10px_rgba(0,240,255,0.15)]' : 'text-slate-400 hover:text-white'
               }`}
             >
               CHANGE MAP OVERLAY
@@ -522,7 +522,7 @@ export default function EvidenceViewer({ evidence: propEvidence, analysisId: pro
               type="button"
               onClick={() => setActiveTab('before')}
               className={`px-3 py-1.5 rounded transition-all ${
-                activeTab === 'before' ? 'bg-[#11151a] text-[#00f0ff] font-bold border border-[#00f0ff]/30' : 'text-slate-400 hover:text-white'
+                activeTab === 'before' ? 'bg-[#0c1622] text-[#00f0ff] font-bold border border-[#00f0ff]/40 shadow-[0_0_10px_rgba(0,240,255,0.15)]' : 'text-slate-400 hover:text-white'
               }`}
             >
               BASELINE (T1)
@@ -531,7 +531,7 @@ export default function EvidenceViewer({ evidence: propEvidence, analysisId: pro
               type="button"
               onClick={() => setActiveTab('after')}
               className={`px-3 py-1.5 rounded transition-all ${
-                activeTab === 'after' ? 'bg-[#11151a] text-[#00f0ff] font-bold border border-[#00f0ff]/30' : 'text-slate-400 hover:text-white'
+                activeTab === 'after' ? 'bg-[#0c1622] text-[#00f0ff] font-bold border border-[#00f0ff]/40 shadow-[0_0_10px_rgba(0,240,255,0.15)]' : 'text-slate-400 hover:text-white'
               }`}
             >
               COMPARISON (T2)
@@ -585,7 +585,7 @@ export default function EvidenceViewer({ evidence: propEvidence, analysisId: pro
       {/* FULLSCREEN SATELLITE INSPECTION MODAL */}
       {fullscreenImage && (
         <div className="fixed inset-0 z-[6000] bg-black/95 backdrop-blur-lg flex flex-col p-4 sm:p-6 space-y-4">
-          <div className="flex items-center justify-between border-b border-[#172332] pb-3 font-mono-tech">
+          <div className="flex items-center justify-between border-b border-[#152232] pb-3 font-mono-tech">
             <div className="flex items-center gap-2">
               <Globe className="w-5 h-5 text-[#00f0ff]" />
               <span className="text-sm font-bold text-white uppercase">{fullscreenImage.title}</span>
@@ -593,13 +593,13 @@ export default function EvidenceViewer({ evidence: propEvidence, analysisId: pro
             <button
               type="button"
               onClick={() => setFullscreenImage(null)}
-              className="p-1.5 rounded bg-[#080d12] hover:bg-[#121a24] text-slate-300 hover:text-white border border-[#172332] transition-colors"
+              className="p-1.5 rounded bg-[#060b12] hover:bg-[#0e1824] text-slate-300 hover:text-white border border-[#152232] transition-colors"
             >
               <X className="w-5 h-5" />
             </button>
           </div>
 
-          <div className="flex-1 overflow-hidden relative flex items-center justify-center bg-[#020406] rounded border border-[#172332] p-4">
+          <div className="flex-1 overflow-hidden relative flex items-center justify-center bg-[#020509] rounded border border-[#152232] p-4">
             <img
               src={fullscreenImage.url}
               alt={fullscreenImage.title}
@@ -608,7 +608,7 @@ export default function EvidenceViewer({ evidence: propEvidence, analysisId: pro
             />
           </div>
 
-          <div className="flex flex-wrap items-center justify-between gap-4 text-xs font-mono-tech text-slate-400 border-t border-[#172332] pt-3">
+          <div className="flex flex-wrap items-center justify-between gap-4 text-xs font-mono-tech text-slate-400 border-t border-[#152232] pt-3">
             <span>SENSOR: {provenance.primary_satellite || 'SENTINEL-2 L2A'}</span>
             <span>ACQUISITION: {fullscreenImage.dateStr || '2024-05-01'}</span>
             <span>BOUNDS: {formattedBbox}</span>

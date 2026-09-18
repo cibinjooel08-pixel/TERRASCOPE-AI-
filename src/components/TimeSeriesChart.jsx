@@ -17,16 +17,16 @@ export default function TimeSeriesChart({ data, metric = 'ndvi' }) {
       <div className="w-full h-[300px]">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={sampleData} margin={{ top: 10, right: 20, left: 0, bottom: 0 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#20252b" />
-            <XAxis dataKey="date" stroke="#7f8995" tick={{ fontSize: 11, fontFamily: 'JetBrains Mono' }} />
-            <YAxis stroke="#7f8995" tick={{ fontSize: 11, fontFamily: 'JetBrains Mono' }} />
+            <CartesianGrid strokeDasharray="3 3" stroke="#152232" />
+            <XAxis dataKey="date" stroke="#4a5d73" tick={{ fontSize: 11, fontFamily: 'JetBrains Mono' }} />
+            <YAxis stroke="#4a5d73" tick={{ fontSize: 11, fontFamily: 'JetBrains Mono' }} />
             <Tooltip
-              contentStyle={{ backgroundColor: '#07090b', borderColor: '#2a3037', borderRadius: '4px', fontSize: '12px', fontFamily: 'JetBrains Mono', color: '#ffffff' }}
+              contentStyle={{ backgroundColor: '#060b12', borderColor: '#152232', borderRadius: '4px', fontSize: '11px', fontFamily: 'JetBrains Mono', color: '#ffffff', boxShadow: '0 4px 20px rgba(0,0,0,0.6)' }}
             />
             <Legend wrapperStyle={{ fontSize: '11px', fontFamily: 'JetBrains Mono', paddingTop: '10px' }} />
-            <Line type="monotone" dataKey="ndvi" name="NDVI (Crop Health)" stroke="#10b981" strokeWidth={2} dot={{ r: 4 }} />
-            <Line type="monotone" dataKey="ndwi" name="NDWI (Water Expansion)" stroke="#00f0ff" strokeWidth={2} dot={{ r: 4 }} />
-            <Line type="monotone" dataKey="sar_vv" name="SAR Backscatter (dB)" stroke="#ef4444" strokeWidth={2} dot={{ r: 4 }} />
+            <Line type="monotone" dataKey="ndvi" name="NDVI (Crop Health)" stroke="#10b981" strokeWidth={2} dot={{ r: 3, fill: '#10b981' }} activeDot={{ r: 5, fill: '#10b981' }} />
+            <Line type="monotone" dataKey="ndwi" name="NDWI (Water Expansion)" stroke="#00f0ff" strokeWidth={2} dot={{ r: 3, fill: '#00f0ff' }} activeDot={{ r: 5, fill: '#00f0ff' }} />
+            <Line type="monotone" dataKey="sar_vv" name="SAR Backscatter (dB)" stroke="#f43f5e" strokeWidth={2} dot={{ r: 3, fill: '#f43f5e' }} activeDot={{ r: 5, fill: '#f43f5e' }} />
           </LineChart>
         </ResponsiveContainer>
       </div>
