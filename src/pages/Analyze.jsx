@@ -81,9 +81,8 @@ export default function Analyze({ initialAnalysisId, onAnalysisSuccess, setIsAna
     if ((yearA && yearA < 2016) || (yearB && yearB < 2016) || invalidPromptYears.length > 0) {
       const badYear = invalidPromptYears[0] || (yearA && yearA < 2016 ? yearA : yearB);
       setErrorState({
-        error_code: 'TEMPORAL_OUT_OF_BOUNDS',
-        message: `Temporal range error: Year ${badYear} precedes Copernicus constellation operational timeline.`,
-        suggestion: 'Copernicus Sentinel-1 and Sentinel-2 satellite data is systematically available only from 2016 to present. Please select observation years between 2016 and 2026.'
+        error_code: 'INVALID_YEAR',
+        message: `Invalid Date: Year ${badYear} is below 2016. (Please select years between 2016 and 2026)`
       });
       return;
     }
@@ -190,15 +189,20 @@ export default function Analyze({ initialAnalysisId, onAnalysisSuccess, setIsAna
 
       {/* 2. ERROR ADVISORY BANNER */}
       {errorState && (
-        <div className="p-4 bg-rose-500/10 border border-rose-500/40 rounded flex items-start gap-3 text-xs text-rose-300 font-mono-tech">
-          <AlertCircle className="w-5 h-5 text-rose-400 shrink-0 mt-0.5" />
-          <div className="space-y-1">
-            <p className="font-bold text-white">MISSION EXECUTION INTERRUPTED [{errorState.error_code || 'ERROR'}]</p>
-            <p className="leading-relaxed text-rose-200">{errorState.message || 'Telemetry retrieval failed.'}</p>
-            {errorState.suggestion && (
-              <p className="text-[11px] text-rose-400">Recommendation: {errorState.suggestion}</p>
-            )}
+        <div className="p-3.5 bg-rose-500/15 border border-rose-500/60 rounded flex items-center justify-between gap-3 text-xs text-rose-300 font-mono-tech shadow-[0_0_15px_rgba(244,63,94,0.15)]">
+          <div className="flex items-center gap-2.5">
+            <AlertCircle className="w-4 h-4 text-rose-400 shrink-0" />
+            <p className="font-bold text-rose-200 text-xs sm:text-[13px]">
+              {errorState.message || 'Invalid parameters.'}
+            </p>
           </div>
+          <button
+            type="button"
+            onClick={() => setErrorState(null)}
+            className="text-[11px] text-rose-400 hover:text-white px-2 py-0.5 rounded border border-rose-500/40 hover:bg-rose-500/20 transition-all shrink-0"
+          >
+            DISMISS
+          </button>
         </div>
       )}
 

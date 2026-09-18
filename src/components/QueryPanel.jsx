@@ -39,6 +39,9 @@ export default function QueryPanel({
     { label: "FLOOD RISK", text: "Is this area likely to have flooding based on history?" }
   ];
 
+  const isDateAInvalid = Boolean(dateA && parseInt(String(dateA).slice(0, 4), 10) < 2016);
+  const isDateBInvalid = Boolean(dateB && parseInt(String(dateB).slice(0, 4), 10) < 2016);
+
   return (
     <div className="panel-aerospace p-5 sm:p-6 space-y-6 tech-corners">
       
@@ -121,15 +124,19 @@ export default function QueryPanel({
 
       {/* Observation Window & Sensor Configuration */}
       <div className="space-y-4 pt-4 border-t border-[#152232]">
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 font-mono-tech">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 font-mono-tech items-start">
           
           {/* Step 03: Baseline T1 Date */}
           <div className="space-y-1.5">
-            <div className="flex items-center justify-between text-[10.5px]">
-              <label className="text-slate-300 flex items-center gap-1.5 font-bold">
-                <Calendar className="w-3.5 h-3.5 text-[#00f0ff]" /> BASELINE DATE (T1)
+            <div className="flex items-center justify-between text-[10.5px] h-5">
+              <label className="text-slate-300 flex items-center gap-1.5 font-bold whitespace-nowrap truncate">
+                <Calendar className="w-3.5 h-3.5 text-[#00f0ff] shrink-0" /> BASELINE (T1)
               </label>
-              <span className="text-[9px] text-[#00f0ff]/70 font-mono">≥ 2016</span>
+              {isDateAInvalid ? (
+                <span className="text-[9.5px] text-rose-400 font-bold whitespace-nowrap animate-pulse">INVALID &lt; 2016</span>
+              ) : (
+                <span className="text-[9px] text-slate-500 font-mono whitespace-nowrap">≥ 2016</span>
+              )}
             </div>
             <input
               type="date"
@@ -137,17 +144,28 @@ export default function QueryPanel({
               min="2016-01-01"
               max="2026-12-31"
               onChange={(e) => setDateA(e.target.value)}
-              className="w-full input-aerospace py-2 px-3 text-xs font-mono-tech bg-[#050b12]"
+              className={`w-full input-aerospace py-2 px-3 text-xs font-mono-tech bg-[#050b12] transition-all ${
+                isDateAInvalid ? 'border-rose-500 text-rose-300 bg-rose-500/10 focus:border-rose-400 shadow-[0_0_10px_rgba(244,63,94,0.25)]' : ''
+              }`}
             />
+            {isDateAInvalid && (
+              <p className="text-[10px] text-rose-400 font-bold flex items-center gap-1">
+                ⚠️ Invalid: Year &lt; 2016
+              </p>
+            )}
           </div>
 
           {/* Step 03: Comparison T2 Date */}
           <div className="space-y-1.5">
-            <div className="flex items-center justify-between text-[10.5px]">
-              <label className="text-slate-300 flex items-center gap-1.5 font-bold">
-                <Calendar className="w-3.5 h-3.5 text-sky-400" /> COMPARISON DATE (T2)
+            <div className="flex items-center justify-between text-[10.5px] h-5">
+              <label className="text-slate-300 flex items-center gap-1.5 font-bold whitespace-nowrap truncate">
+                <Calendar className="w-3.5 h-3.5 text-sky-400 shrink-0" /> COMPARISON (T2)
               </label>
-              <span className="text-[9px] text-sky-400/70 font-mono">≥ 2016</span>
+              {isDateBInvalid ? (
+                <span className="text-[9.5px] text-rose-400 font-bold whitespace-nowrap animate-pulse">INVALID &lt; 2016</span>
+              ) : (
+                <span className="text-[9px] text-slate-500 font-mono whitespace-nowrap">≥ 2016</span>
+              )}
             </div>
             <input
               type="date"
@@ -155,27 +173,34 @@ export default function QueryPanel({
               min="2016-01-01"
               max="2026-12-31"
               onChange={(e) => setDateB(e.target.value)}
-              className="w-full input-aerospace py-2 px-3 text-xs font-mono-tech bg-[#050b12]"
+              className={`w-full input-aerospace py-2 px-3 text-xs font-mono-tech bg-[#050b12] transition-all ${
+                isDateBInvalid ? 'border-rose-500 text-rose-300 bg-rose-500/10 focus:border-rose-400 shadow-[0_0_10px_rgba(244,63,94,0.25)]' : ''
+              }`}
             />
+            {isDateBInvalid && (
+              <p className="text-[10px] text-rose-400 font-bold flex items-center gap-1">
+                ⚠️ Invalid: Year &lt; 2016
+              </p>
+            )}
           </div>
 
           {/* Step 04: Satellite Sensor Selection */}
           <div className="space-y-1.5">
-            <div className="flex items-center justify-between text-[10.5px]">
-              <label className="text-slate-300 flex items-center gap-1.5 font-bold">
-                <Satellite className="w-3.5 h-3.5 text-purple-400" /> CONSTELLATION / SENSOR
+            <div className="flex items-center justify-between text-[10.5px] h-5">
+              <label className="text-slate-300 flex items-center gap-1.5 font-bold whitespace-nowrap truncate">
+                <Satellite className="w-3.5 h-3.5 text-purple-400 shrink-0" /> CONSTELLATION
               </label>
-              <span className="text-[9px] text-emerald-400 font-bold">STAC SYNC</span>
+              <span className="text-[9px] text-emerald-400 font-bold whitespace-nowrap">STAC SYNC</span>
             </div>
             <select
               value={satellite}
               onChange={(e) => setSatellite(e.target.value)}
               className="w-full input-aerospace py-2 px-3 text-xs font-mono-tech bg-[#050b12]"
             >
-              <option value="auto">Auto Sensor Selection (AI Intent Directed)</option>
-              <option value="sentinel-2-l2a">Sentinel-2 L2A (10m Optical MSI)</option>
-              <option value="sentinel-1-grd">Sentinel-1 GRD (10m C-SAR Radar)</option>
-              <option value="landsat-8">Landsat-8 OLI (15-30m Optical/Thermal)</option>
+              <option value="auto">Auto Sensor Selection</option>
+              <option value="sentinel-2-l2a">Sentinel-2 L2A (10m Optical)</option>
+              <option value="sentinel-1-grd">Sentinel-1 GRD (10m Radar)</option>
+              <option value="landsat-8">Landsat-8 OLI (15-30m Optical)</option>
             </select>
           </div>
 
