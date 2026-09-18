@@ -177,8 +177,6 @@ export default function EvidenceViewer({ evidence: propEvidence, analysisId: pro
                 style={{
                   transform: `scale(${zoomVal})`,
                   transformOrigin: 'center center',
-                  imageRendering: 'crisp-edges',
-                  WebkitOptimizeContrast: true
                 }}
                 className="max-w-full max-h-full object-contain transition-transform duration-200"
               />
@@ -603,7 +601,6 @@ export default function EvidenceViewer({ evidence: propEvidence, analysisId: pro
             <img
               src={fullscreenImage.url}
               alt={fullscreenImage.title}
-              style={{ imageRendering: 'crisp-edges' }}
               className="max-w-full max-h-full object-contain shadow-2xl"
             />
           </div>
